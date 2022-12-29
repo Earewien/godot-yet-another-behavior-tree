@@ -72,7 +72,116 @@ The sequence node is a *composite node* that executes its children from the firs
 
 🔑 Properties list:
 - `save_progression` : indicates whether the sequence should resume to the last running child on next tree execution (*on*), or restart from its first child (*off*). Its usefull to describe a non-interruptible action, or to optimize process time. Default is *off*.
--
-### ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btdecorator.png) Decorator Nodes
 
-### ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btleaf.png) Leaf Nodes
+### ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btsuccess.png) BTSuccess
+
+The success node is a *decorator* node that always returns *success* on child execution.
+
+### ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btfailure.png) BTFailure
+
+The failure node is a *decorator* node that always returns *failed* on child execution.
+
+### ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btinverter.png) BTInverter
+
+The inverter node is a *decorator* node returns *success* when its child fails its execution, and *failure* when its child succeeds its execution. When its child is *running*, it returns *running* too.
+
+### ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btlimiter.png) BTLimiter
+
+The limiter node is a *decorator* node that limits the total number of execution of its child node. When the limit is not reachs, the limiter nodes reports its child execution status. Once the limit is reachs, it never executs its child and always report a *failed* execution.
+
+![image](documentation/assets/nodes/btlimiter.png)
+
+🔑 Properties list:
+- `limit`: number of allowed child execution. Default is *1*,
+- `include_limit`: whether or not the `limit` value is included into the number of times the child can run. It clarifies the usage of the limit. Default is *on*.
+
+### ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btrepeatuntil.png) BTRepeatUntil
+
+The repeat until node is a *decorator* node that loop its child execution until child execution result is as excepted. It is possible to specifies the maximum number of loop execution allowed to obtain the desired result. If desired result is obtained before the loop execution limit, the repeat until node returns the obtained result. If not, its returns a *failure*.
+
+![image](documentation/assets/nodes/btrepeatuntil.png)
+
+🔑 Properties list:
+- `stop_condition`: expected child result to stop the loop. Default is *SUCCESS*,
+- `max_iteration`: maximum number of child execution to obtain the desired result. If value is *0*, there is **no limit** to the number of times the loop can run (⚠️ be careful to not create an infinite loop). If value is more than zero, its represents the maximum number of loop execution. Default is *0*.
+
+### ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btrandom.png) BTRandom
+
+The random node is a *decorator* node randomly execute its child. If the child is executed, the node result is the same as its child result. Otherwise, result is *failure.
+
+![image](documentation/assets/nodes/btrandom.png)
+
+🔑 Properties list:
+- `probability`: a float between *0* (included) and *1* (included) indicating the probability of child execution. Default is *0.5*.
+
+### ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btcondition.png) BTCondition
+
+The condition node is a *leaf* node. Its purpose is to return *success* when  a condition is meet, *failure* otherwise. This node should never return *running.
+
+**Users must subclass this node to implements their own condititions**.
+
+### ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btconditionblackboardkeyexists.png) BTConditionBlackboardKeyExists
+
+The blackboard key exists condition node is a *leaf* node. It returns *success* if a certain key is present in the tree blackboard during its execution, *failure* otherwise.
+
+![image](documentation/assets/nodes/btconditionblackboardkeyexists.png)
+
+🔑 Properties list:
+- `blackboard_key`: name of the key that must exists in the blackboard.
+
+⚠️ Due to GDScript 2.0 restrictions, only string type keys can be set, since its not possible to export Variant variables.
+
+### ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btconditionblackboardvaluescomparison.png) BTConditionBlackboardValuesComparison
+
+The blackboard values comparison condition node is a *leaf* node. It returns *success* both values represented by specified keys returns true when compared using the given operator.
+
+![image](documentation/assets/nodes/btconditionblackboardvaluescomparison.png)
+
+🔑 Properties list:
+- `first_operand_blackboard_key`: name of the key that old the first value to compare.
+- `operator` : operator used to compare values
+- `second_operand_blackboard_key`: name of the key that old the second value to compare.
+
+⚠️ Due to GDScript 2.0 restrictions, only string type keys can be set, since its not possible to export Variant variables.
+
+### ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btaction.png) BTAction
+
+The action node is a *leaf* node. Its purpose is to return *success* when an action is completed, *failure* if its fails to execute, and *running* if the action is occuring but is not completed yet.
+
+**Users must subclass this node to implements their own actions**.
+
+### ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btactionwait.png) BTActionWait
+
+The wait action node is a *leaf* node. Its execution returns *running* during the specified wait time, then returns *success* when specified time is elapsed. After succeeded, the wait time is rearmed for next tree execution.
+
+![image](documentation/assets/nodes/btactionwait.png)
+
+🔑 Properties list:
+- `wait_time_ms`: number of milliseconds to wait before returning *success*. Default is *1000*,
+- `random_deviation_ms` : indicates if a random deviation should be applied to the wait time. *0* means theire is no deviation et the wait time will be strictyl respected. Random deviation may change after each node rearm. Default is *0*, meaning no deviation at all.
+
+### ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btactionblackboardset.png) BTActionBlackboardSet
+
+The blackboard set action node is a *leaf* node. It allows to set a value in the blackboard. Its execution always returns *success*. 
+
+![image](documentation/assets/nodes/btactionblackboardset.png)
+
+🔑 Properties list:
+- `blackboard_key`: name of the key that must be set,
+- `expression` : an expression representing the value to associated to the given key. The expression will be evaluated by Godot Engine during child execution. It should be simple. See [Godot Expression](https://docs.godotengine.org/en/latest/classes/class_expression.html) for details. In expression, user has access to two predefined variables:
+  - `actor`: the node the tree is describing action for,
+  - `blackboard`: the tree blackboard
+- `can_overwrite_value` : a boolean indicating if the value must be overwritten if it already exists.
+
+⚠️ Due to GDScript 2.0 restrictions, only string type keys can be set, since its not possible to export Variant variables.
+
+### ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btactionblackboarddelete.png) BTActionBlackboardDelete
+
+The blackboard delete action node is a *leaf* node. It allows to erase a key from the tree blackboard.
+
+![image](documentation/assets/nodes/btactionblackboarddelete.png)
+
+🔑 Properties list:
+- `blackboard_key`: name of the key that must be erased from blackboard.
+
+⚠️ Due to GDScript 2.0 restrictions, only string type keys can be set, since its not possible to export Variant variables.
