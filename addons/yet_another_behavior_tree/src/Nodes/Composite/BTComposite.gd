@@ -11,8 +11,6 @@ class_name BTComposite
 # Exports
 #------------------------------------------
 
-@export var save_progression:bool = false
-
 #------------------------------------------
 # Variables publiques
 #------------------------------------------

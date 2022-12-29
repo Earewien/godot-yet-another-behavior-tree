@@ -11,6 +11,8 @@ class_name BTSelector
 # Exports
 #------------------------------------------
 
+@export var save_progression:bool = false
+
 #------------------------------------------
 # Variables publiques
 #------------------------------------------

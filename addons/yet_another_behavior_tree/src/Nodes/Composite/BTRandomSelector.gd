@@ -33,4 +33,5 @@ class_name BTRandomSelector
 
 func start(blackboard:BTBlackboard) -> void:
     super.start(blackboard)
-    _children.shuffle()
+    if not save_progression or _running_child_index == -1:
+        _children.shuffle()

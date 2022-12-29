@@ -12,6 +12,8 @@ class_name BTSequence
 # Exports
 #------------------------------------------
 
+@export var save_progression:bool = false
+
 #------------------------------------------
 # Variables publiques
 #------------------------------------------
