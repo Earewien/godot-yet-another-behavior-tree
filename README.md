@@ -4,6 +4,17 @@ A Behavior Tree implementation for [Godot Engine](https://godotengine.org/)
 
 ![image](documentation/assets/bt_illustration.png)
 
+## 📄 Yet Another Behavior Tree in a nutshell
+
+This behavior tree is a Godot node that can be added to your *Scene* tree. The logic inside tree nodes will be run every frame, during *process* or *physics process*, depending on tree process mode.
+
+At each frame, the `tick` function of tree nodes will be run. This function has access to the *actor* (the node the tree is describing behavior for), and a *blackboard* (allowing to share data between nodes). The tick function can either returns:
+- *SUCCESS*, indicating that node execution is successful,
+- *RUNNING*, indicating that node is doing a long computation/action/whatever you want, that is not finished yet,
+- *FAILURE*, indicating that something went wrong during child execution (condition not met, ...).
+
+Depending on your tree structure, node result will produce various behaviors. See node documentation for mor details.
+
 ## 📄 Features
 
 ➡️ This plugin is an implementation of well-known Behavior Trees, allowing game developers to create AI-Like behaviors for their NPCs. In addition to provide all behavior tree base nodes, this plugin also brings additional helper nodes that avoid to create custom ones.
@@ -185,3 +196,51 @@ The blackboard delete action node is a *leaf* node. It allows to erase a key fro
 - `blackboard_key`: name of the key that must be erased from blackboard.
 
 ⚠️ Due to GDScript 2.0 restrictions, only string type keys can be set, since its not possible to export Variant variables.
+
+## 📄 Creating your own nodes
+
+Even if the provided node set is wonderful and all (😁), you will need to create your own nodes to describe your own behavior, your functional actions and conditions, or whatever you want. 
+
+*Creating your own composite and decorator nodes is off-topic here, and should be reserved for advanced users.* But creating your own actions and conditions is required, and is quite simple. 
+
+Empty-shell nodes **BTAction** and **BTCondition** are your entry-points. You just need to create a GDScript that extends one of this node, depending on what you want to do, and overrick the `tick` function, then code your functional stuff in it !
+
+### Exemple of condition
+
+```gdscript
+extends BTCondition
+class_name ConditionPlayerIsInRange
+@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btcondition.png")
+
+@export var player_detection_distance:int = 50
+
+func tick(actor:Node2D, _blackboard:BTBlackboard) -> int:
+    var player_position:Vector2 = get_tree().get_nodes_in_group("player")[0].global_position
+    var actor_position:Vector2 = actor.global_position
+    var player_distance:float = actor_position.distance_to(player_position)
+
+    if player_distance <= player_detection_distance:
+        return BTTickResult.SUCCESS
+
+    return BTTickResult.FAILURE
+
+```
+
+### Exemple of action
+
+```gdscript
+extends BTAction
+class_name ActionWander
+@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btaction.png")
+
+func tick(actor:Node2D, blackboard:BTBlackboard) -> int:
+    var current_position:Vector2 = actor.global_position
+    var target_position:Vector2 = blackboard.get_data("wander_position")
+    if current_position.distance_to(target_position) < 5:
+        return BTTickResult.SUCCESS
+    else:
+        var direction:Vector2 = (target_position - current_position).normalized()
+        actor.velocity = direction
+        return BTTickResult.RUNNING
+
+```
