@@ -69,7 +69,7 @@ func _ready() -> void:
         _blackboard = BTBlackboard.new()
 
     if not Engine.is_editor_hint():
-        Performance.add_custom_monitor("BTRoot/" + get_name() + "-" + str(get_instance_id()), _compute_last_exec_time)
+        Performance.add_custom_monitor("BTRoot/%s-%s" % [get_name(), get_instance_id()], _compute_last_exec_time)
 
 func _process(delta:float) -> void:
     if not Engine.is_editor_hint() and enabled and root_process_mode == BTRootProcessMode.PROCESS:
