@@ -53,6 +53,8 @@ var _execution_blackboard:BTBlackboard
 var _execution_start_time_ms:float
 var _execution_stop_time_ms:float
 
+@onready var _performance_monitor_identifier:String = "BTRoot/%s-%s" % [get_name(), get_instance_id()]
+
 #------------------------------------------
 # Fonctions Godot redéfinies
 #------------------------------------------
@@ -69,7 +71,9 @@ func _ready() -> void:
         _blackboard = BTBlackboard.new()
 
     if not Engine.is_editor_hint():
-        Performance.add_custom_monitor("BTRoot/%s-%s" % [get_name(), get_instance_id()], _compute_last_exec_time)
+        _add_custom_performance_monitor()
+        tree_entered.connect(_add_custom_performance_monitor)
+        tree_exited.connect(_remove_custom_performance_monitor)
 
 func _process(delta:float) -> void:
     if not Engine.is_editor_hint() and enabled and root_process_mode == BTRootProcessMode.PROCESS:
@@ -133,6 +137,13 @@ func _do_execute(delta:float):
         _previous_running_nodes = running_nodes
     _register_execution_stop()
 
+func _add_custom_performance_monitor() -> void:
+    if not Performance.has_custom_monitor(_performance_monitor_identifier):
+        Performance.add_custom_monitor(_performance_monitor_identifier, _compute_last_exec_time)
+
+func _remove_custom_performance_monitor() -> void:
+    if Performance.has_custom_monitor(_performance_monitor_identifier):
+        Performance.remove_custom_monitor(_performance_monitor_identifier)
 
 func _register_execution_start() -> void:
     _execution_start_time_ms = Time.get_ticks_msec()
