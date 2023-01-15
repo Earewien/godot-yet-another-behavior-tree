@@ -161,6 +161,24 @@ The action node is a *leaf* node. Its purpose is to return *success* when an act
 
 **Users must subclass this node to implements their own actions**.
 
+### ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btactioncallable.png) BTActionCallable
+
+The callable action node is a *leaf* node. At each tick, the node calls a function from an object that has been parametrized. It can also pass arguments to this function. Its result depends of the specified function result:
+- If specified function returns a `bool`, then the tick result is *success* is boolean is true, *failure* otherwise,
+- If the specified function returns an `int`, it is interpreted as the enum values `SUCCESS`, `RUNNING` or `FAILURE` from `BTTickResult` object. If another value is returned by specified function, behavior is undefined,
+- If specified function returns nothing (`void` or `null` result), then *success* is returned.
+
+![image](documentation/assets/nodes/btactioncallable.png)
+
+🔑 Properties list:
+- `method_owner_path`: path to the node that contains the function to call. Default is *empty*,
+- `method_name` : name of the function to call in the *method owner node*. Default is *empty*,
+- `method_arguments`: array of arguments to pass when calling the function. Arguments are expressions that will be evaluated by Godot Engine at runtime to produce the desired value. See [Godot Expression](https://docs.godotengine.org/en/latest/classes/class_expression.html) for details. In expression, user has access to two predefined variables:
+  - `actor`: the node the tree is describing action for,
+  - `blackboard`: the tree blackboard.
+Number and types of arguments must match function prototype, or an error will occurs at runtime. Default is an *empty array* meaning no argument.
+
+
 ### ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btactionwait.png) BTActionWait
 
 The wait action node is a *leaf* node. Its execution returns *running* during the specified wait time, then returns *success* when specified time is elapsed. After succeeded, the wait time is rearmed for next tree execution.
