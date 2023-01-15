@@ -131,6 +131,20 @@ The condition node is a *leaf* node. Its purpose is to return *success* when  a 
 
 **Users must subclass this node to implements their own condititions**.
 
+### ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btconditioncallable.png) BTConditionCallable
+
+The callable condition node is a *leaf* node. The node calls a function from an object that has been parametrized to check for a condition. It can also pass arguments to this function. Its result is the function result, meaning that specified function must returns a `bool` value. This nodes returns *success* if function call returned `true`, and *failure* if function call returned `false`.
+
+![image](documentation/assets/nodes/btconditioncallable.png)
+
+🔑 Properties list:
+- `method_owner_path`: path to the node that contains the function to call. Default is *empty*,
+- `method_name` : name of the function to call in the *method owner node*. Default is *empty*,
+- `method_arguments`: array of arguments to pass when calling the function. Arguments are expressions that will be evaluated by Godot Engine at runtime to produce the desired value. See [Godot Expression](https://docs.godotengine.org/en/latest/classes/class_expression.html) for details. In expression, user has access to two predefined variables:
+  - `actor`: the node the tree is describing action for,
+  - `blackboard`: the tree blackboard.
+Number and types of arguments must match function prototype, or an error will occurs at runtime. Default is an *empty array* meaning no argument.
+
 ### ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btconditionblackboardkeyexists.png) BTConditionBlackboardKeyExists
 
 The blackboard key exists condition node is a *leaf* node. It returns *success* if a certain key is present in the tree blackboard during its execution, *failure* otherwise.
