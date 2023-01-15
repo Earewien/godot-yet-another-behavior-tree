@@ -111,7 +111,10 @@ func _check_direct_children_validity() -> bool:
 func _check_actor_validity() -> bool:
     var is_valid:bool = actor_path != null and not actor_path.is_empty()
     if is_valid:
-        _actor = get_node(actor_path)
+        _actor = get_node_or_null(actor_path)
+        if not is_instance_valid(_actor) and is_inside_tree():
+            # Fallback : si le chemin donné n'était pas relatif à la scene courante, on le check en absolu
+            _actor = get_tree().current_scene.get_node_or_null(actor_path)
         is_valid =_actor != null and is_instance_valid(_actor)
     return is_valid
 
