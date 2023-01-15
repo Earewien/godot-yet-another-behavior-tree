@@ -69,6 +69,11 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://addons/yet_another_behavior_tree/src/Nodes/Decorators/BTDecorator.gd"
 }, {
+"base": "RefCounted",
+"class": &"BTExpression",
+"language": &"GDScript",
+"path": "res://addons/yet_another_behavior_tree/src/Utils/BTExpression.gd"
+}, {
 "base": "BTDecorator",
 "class": &"BTFailure",
 "language": &"GDScript",
@@ -172,6 +177,7 @@ _global_script_class_icons={
 "BTConditionBlackboardValuesComparison": "res://addons/yet_another_behavior_tree/src/Assets/Icons/btconditionblackboardvaluescomparison.png",
 "BTConditionCallable": "res://addons/yet_another_behavior_tree/src/Assets/Icons/btconditioncallable.png",
 "BTDecorator": "res://addons/yet_another_behavior_tree/src/Assets/Icons/btdecorator.png",
+"BTExpression": "",
 "BTFailure": "res://addons/yet_another_behavior_tree/src/Assets/Icons/btfailure.png",
 "BTInverter": "res://addons/yet_another_behavior_tree/src/Assets/Icons/btinverter.png",
 "BTLeaf": "res://addons/yet_another_behavior_tree/src/Assets/Icons/btleaf.png",

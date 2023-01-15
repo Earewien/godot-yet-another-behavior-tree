@@ -33,6 +33,8 @@ class_name BTConditionCallable
 #------------------------------------------
 
 var _method_owner:Node
+var _cached_method_arguments:Array[String] = []
+var _argument_expression:Array[BTExpression] = []
 
 #------------------------------------------
 # Fonctions Godot redéfinies
@@ -40,6 +42,7 @@ var _method_owner:Node
 
 func _ready() -> void:
     _update_method_owner_from_path()
+    _update_argument_expressions()
 
 func _get_configuration_warnings() -> PackedStringArray:
     var warnings:PackedStringArray = []
@@ -55,7 +58,8 @@ func _get_configuration_warnings() -> PackedStringArray:
 #------------------------------------------
 
 func tick(actor:Node2D, blackboard:BTBlackboard) -> int:
-    var arguments:Array[Variant] = method_arguments.map(func(e): return _execute_expression(e, actor, blackboard))
+    _update_argument_expressions()
+    var arguments:Array[Variant] = _argument_expression.map(func(expr):return expr.evaluate(actor, blackboard))
     var result:bool = _method_owner.callv(method_name, arguments)
     return BTTickResult.SUCCESS if result else BTTickResult.FAILURE
 
@@ -82,20 +86,11 @@ func _update_method_owner_from_path() -> void:
         # Fallback : si le chemin donné n'était pas relatif à la scene courante, on le check en absolu
         _method_owner = get_tree().current_scene.get_node_or_null(method_owner_path)
 
-func _parse_expression(string_expr:String) -> Expression:
-    var expr:Expression = Expression.new()
-    var parse_code:int = expr.parse(string_expr, ["actor", "blackboard"])
-    if parse_code != OK:
-        push_error("Unable to parse expression '%s' : %s" % [string_expr, expr.get_error_text()])
-        return null
-    return expr
-
-func _execute_expression(string_expr:String, actor:Node2D, blackboard:BTBlackboard) -> Variant:
-    var result:Variant = null
-    var expr:Expression = _parse_expression(string_expr)
-    if expr != null:
-        result = expr.execute([actor, blackboard], self, true)
-        if expr.has_execute_failed():
-            result = null
-            push_error("Unable to execute expression '%s' : %s" % [string_expr, expr.get_error_text()])
-    return result
+func _update_argument_expressions() -> void:
+    if _cached_method_arguments != method_arguments:
+        _cached_method_arguments = Array(method_arguments)
+        _argument_expression.clear()
+        for expr in _cached_method_arguments:
+            var btexpression:BTExpression = BTExpression.new()
+            btexpression.expression = expr
+            _argument_expression.append(btexpression)

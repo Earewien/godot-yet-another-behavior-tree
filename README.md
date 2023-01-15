@@ -142,7 +142,8 @@ The callable condition node is a *leaf* node. The node calls a function from an 
 - `method_name` : name of the function to call in the *method owner node*. Default is *empty*,
 - `method_arguments`: array of arguments to pass when calling the function. Arguments are expressions that will be evaluated by Godot Engine at runtime to produce the desired value. See [Godot Expression](https://docs.godotengine.org/en/latest/classes/class_expression.html) for details. In expression, user has access to two predefined variables:
   - `actor`: the node the tree is describing action for,
-  - `blackboard`: the tree blackboard.
+  - `blackboard`: the tree blackboard,
+  - `delta`: the *_process* or *_physics_process* delta value, as a `float`.
 Number and types of arguments must match function prototype, or an error will occurs at runtime. Default is an *empty array* meaning no argument.
 
 ### ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btconditionblackboardkeyexists.png) BTConditionBlackboardKeyExists
@@ -189,7 +190,8 @@ The callable action node is a *leaf* node. At each tick, the node calls a functi
 - `method_name` : name of the function to call in the *method owner node*. Default is *empty*,
 - `method_arguments`: array of arguments to pass when calling the function. Arguments are expressions that will be evaluated by Godot Engine at runtime to produce the desired value. See [Godot Expression](https://docs.godotengine.org/en/latest/classes/class_expression.html) for details. In expression, user has access to two predefined variables:
   - `actor`: the node the tree is describing action for,
-  - `blackboard`: the tree blackboard.
+  - `blackboard`: the tree blackboard,
+  - `delta`: the *_process* or *_physics_process* delta value, as a `float`.
 Number and types of arguments must match function prototype, or an error will occurs at runtime. Default is an *empty array* meaning no argument.
 
 
@@ -213,7 +215,8 @@ The blackboard set action node is a *leaf* node. It allows to set a value in the
 - `blackboard_key`: name of the key that must be set,
 - `expression` : an expression representing the value to associated to the given key. The expression will be evaluated by Godot Engine during child execution. It should be simple. See [Godot Expression](https://docs.godotengine.org/en/latest/classes/class_expression.html) for details. In expression, user has access to two predefined variables:
   - `actor`: the node the tree is describing action for,
-  - `blackboard`: the tree blackboard
+  - `blackboard`: the tree blackboard,
+  - `delta`: the *_process* or *_physics_process* delta value, as a `float`.
 - `can_overwrite_value` : a boolean indicating if the value must be overwritten if it already exists.
 
 ⚠️ Due to GDScript 2.0 restrictions, only string type keys can be set, since its not possible to export Variant variables.

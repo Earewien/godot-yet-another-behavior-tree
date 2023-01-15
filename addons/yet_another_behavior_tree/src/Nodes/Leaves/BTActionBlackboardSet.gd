@@ -18,8 +18,10 @@ class_name BTActionBlackboardSet
 
 @export_multiline var expression:String = "" :
     set(value):
-        expression = value
-        update_configuration_warnings()
+        if value != expression:
+            expression = value
+            _update_expression()
+            update_configuration_warnings()
 
 @export var can_overwrite_value:bool = false
 
@@ -31,7 +33,7 @@ class_name BTActionBlackboardSet
 # Variables privées
 #------------------------------------------
 
-var _parsed_compared_value:Variant
+var _expression:BTExpression = BTExpression.new()
 
 #------------------------------------------
 # Fonctions Godot redéfinies
@@ -54,7 +56,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 func tick(actor:Node2D, blackboard:BTBlackboard) -> int:
     if can_overwrite_value or not blackboard.has_data(blackboard_key):
-        var value:Variant = _execute_expression(actor, blackboard)
+        var value:Variant = _expression.evaluate(actor, blackboard)
         blackboard.set_data(blackboard_key, value)
     return BTTickResult.SUCCESS
 
@@ -77,22 +79,7 @@ func _expression_key_is_set() -> bool:
     return expression != null and not expression.is_empty()
 
 func _expression_is_valid() -> bool:
-    return _parse_expression() != null
+    return _expression.is_valid()
 
-func _parse_expression() -> Expression:
-    var expr:Expression = Expression.new()
-    var parse_code:int = expr.parse(expression, ["actor", "blackboard"])
-    if parse_code != OK:
-        push_error("Unable to parse expression '%s' : %s" % [expression, expr.get_error_text()])
-        return null
-    return expr
-
-func _execute_expression(actor:Node2D, blackboard:BTBlackboard) -> Variant:
-    var result:Variant = null
-    var expr:Expression = _parse_expression()
-    if expr != null:
-        result = expr.execute([actor, blackboard], self, true)
-        if expr.has_execute_failed():
-            result = null
-            push_error("Unable to execute expression '%s' : %s" % [expression, expr.get_error_text()])
-    return result
+func _update_expression() -> void:
+    _expression.expression = expression
