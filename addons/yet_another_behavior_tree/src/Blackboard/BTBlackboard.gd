@@ -38,20 +38,21 @@ func get_delta() -> float:
     return get_data("delta")
 
 func has_data(key:Variant) -> bool:
-    return _execution_data.has(key)
+    return get_data(key) != null
 
 func get_data(key:Variant, default_value:Variant = null) -> Variant:
-    return _execution_data.get(key, default_value)
+    var result:Variant = _execution_data.get(key, default_value)
+    return result.get_ref() if result is WeakRef else result
 
 func set_data(key:Variant, value:Variant) -> Variant:
-    var old_value = _execution_data[key] if _execution_data.has(key) else null
-    _execution_data[key] = value
-    return old_value
+    var old_value:Variant = _execution_data[key] if _execution_data.has(key) else null
+    _execution_data[key] = weakref(value) if value is Node else value
+    return old_value.get_ref() if old_value is WeakRef else old_value
 
 func delete_data(key:Variant) -> Variant:
     var old_value = _execution_data[key] if _execution_data.has(key) else null
     _execution_data.erase(key)
-    return old_value
+    return old_value.get_ref() if old_value is WeakRef else old_value
 
 #------------------------------------------
 # Fonctions privées
