@@ -30,6 +30,7 @@ signal on_idle()
 @export var actor_path:NodePath :
     set(value):
         actor_path = value
+        _update_actor_from_path()
         update_configuration_warnings()
 
 @export var blackboard:BTBlackboard = null :
@@ -111,12 +112,15 @@ func _check_direct_children_validity() -> bool:
 func _check_actor_validity() -> bool:
     var is_valid:bool = actor_path != null and not actor_path.is_empty()
     if is_valid:
-        _actor = get_node_or_null(actor_path)
-        if not is_instance_valid(_actor) and is_inside_tree():
-            # Fallback : si le chemin donné n'était pas relatif à la scene courante, on le check en absolu
-            _actor = get_tree().current_scene.get_node_or_null(actor_path)
+        _update_actor_from_path()
         is_valid =_actor != null and is_instance_valid(_actor)
     return is_valid
+
+func _update_actor_from_path() -> void:
+    _actor = get_node_or_null(actor_path)
+    if not is_instance_valid(_actor) and is_inside_tree():
+        # Fallback : si le chemin donné n'était pas relatif à la scene courante, on le check en absolu
+        _actor = get_tree().current_scene.get_node_or_null(actor_path)
 
 func _do_execute(delta:float):
     _register_execution_start()
