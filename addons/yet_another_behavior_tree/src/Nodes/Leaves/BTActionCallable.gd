@@ -63,7 +63,7 @@ func tick(actor:Node2D, blackboard:BTBlackboard) -> int:
     var result:Variant = _method_owner.callv(method_name, arguments)
     if result is bool:
         return BTTickResult.SUCCESS if result else BTTickResult.FAILURE
-    if result is BTTickResult:
+    if result is int:
         return result
     return BTTickResult.SUCCESS
 
