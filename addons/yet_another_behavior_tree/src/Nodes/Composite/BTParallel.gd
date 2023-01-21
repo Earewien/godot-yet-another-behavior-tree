@@ -1,7 +1,7 @@
 @tool
+@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btparallel.png")
 extends BTComposite
 class_name BTParallel
-@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btparallel.png")
 
 #------------------------------------------
 # Signaux

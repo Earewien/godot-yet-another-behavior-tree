@@ -1,7 +1,7 @@
 @tool
+@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btcondition.png")
 extends BTLeaf
 class_name BTCondition
-@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btcondition.png")
 
 #------------------------------------------
 # Signaux

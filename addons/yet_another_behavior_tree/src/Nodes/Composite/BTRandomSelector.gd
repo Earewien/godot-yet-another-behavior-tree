@@ -1,7 +1,7 @@
 @tool
+@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btrandomselector.png")
 extends BTSelector
 class_name BTRandomSelector
-@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btrandomselector.png")
 
 #------------------------------------------
 # Signaux

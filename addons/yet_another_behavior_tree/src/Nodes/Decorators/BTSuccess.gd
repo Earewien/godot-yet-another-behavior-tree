@@ -1,7 +1,7 @@
 @tool
+@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btsuccess.png")
 extends BTDecorator
 class_name BTSuccess
-@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btsuccess.png")
 
 #------------------------------------------
 # Signaux

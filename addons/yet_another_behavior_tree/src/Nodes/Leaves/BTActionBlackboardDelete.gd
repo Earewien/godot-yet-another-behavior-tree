@@ -1,7 +1,7 @@
 @tool
+@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btactionblackboarddelete.png")
 extends BTLeaf
 class_name BTActionBlackboardDelete
-@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btactionblackboarddelete.png")
 
 #------------------------------------------
 # Signaux

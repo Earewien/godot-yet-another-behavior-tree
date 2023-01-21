@@ -1,7 +1,7 @@
 @tool
+@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btnode.png")
 extends Node
 class_name BTNode
-@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btnode.png")
 
 #------------------------------------------
 # Signaux

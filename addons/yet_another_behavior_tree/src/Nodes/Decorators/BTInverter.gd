@@ -1,7 +1,7 @@
 @tool
+@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btinverter.png")
 extends BTDecorator
 class_name BTInverter
-@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btinverter.png")
 
 #------------------------------------------
 # Signaux

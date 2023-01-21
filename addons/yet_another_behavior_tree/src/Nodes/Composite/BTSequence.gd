@@ -1,7 +1,7 @@
 @tool
+@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btsequence.png")
 extends BTComposite
 class_name BTSequence
-@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btsequence.png")
 
 
 #------------------------------------------

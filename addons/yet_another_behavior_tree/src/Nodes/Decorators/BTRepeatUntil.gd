@@ -1,7 +1,7 @@
 @tool
+@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btrepeatuntil.png")
 extends BTDecorator
 class_name BTRepeatUntil
-@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btrepeatuntil.png")
 
 #------------------------------------------
 # Signaux

@@ -1,7 +1,7 @@
 @tool
+@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btactioncallable.png")
 extends BTLeaf
 class_name BTActionCallable
-@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btactioncallable.png")
 
 #------------------------------------------
 # Signaux

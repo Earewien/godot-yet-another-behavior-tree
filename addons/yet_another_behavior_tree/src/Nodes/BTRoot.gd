@@ -1,7 +1,7 @@
 @tool
+@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btroot.png")
 extends BTNode
 class_name BTRoot
-@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btroot.png")
 
 enum BTRootProcessMode {
     PROCESS,

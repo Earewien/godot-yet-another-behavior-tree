@@ -1,7 +1,7 @@
 @tool
+@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btconditionblackboardvaluescomparison.png")
 extends BTLeaf
 class_name BTConditionBlackboardValuesComparison
-@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btconditionblackboardvaluescomparison.png")
 
 enum Operator {
     EQUAL,

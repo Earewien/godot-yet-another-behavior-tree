@@ -1,7 +1,7 @@
 @tool
+@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btconditionblackboardkeyexists.png")
 extends BTLeaf
 class_name BTConditionBlackboardKeyExists
-@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btconditionblackboardkeyexists.png")
 
 #------------------------------------------
 # Signaux

@@ -1,7 +1,7 @@
 @tool
+@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btlimiter.png")
 extends BTDecorator
 class_name BTLimiter
-@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btlimiter.png")
 
 #------------------------------------------
 # Signaux

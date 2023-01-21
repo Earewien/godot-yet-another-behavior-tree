@@ -1,6 +1,6 @@
+@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btblackboard.png")
 extends Node
 class_name BTBlackboard
-@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btblackboard.png")
 
 #------------------------------------------
 # Signaux

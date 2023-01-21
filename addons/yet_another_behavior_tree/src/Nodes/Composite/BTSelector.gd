@@ -1,7 +1,7 @@
 @tool
+@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btselector.png")
 extends BTComposite
 class_name BTSelector
-@icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btselector.png")
 
 #------------------------------------------
 # Signaux
