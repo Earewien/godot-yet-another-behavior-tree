@@ -23,7 +23,7 @@ class_name BTParallel
 # Fonctions Godot redéfinies
 #------------------------------------------
 
-func tick(actor:Node2D, blackboard:BTBlackboard) -> int:
+func tick(actor:Node, blackboard:BTBlackboard) -> int:
     var at_least_one_child_running:bool = false
     var at_least_one_child_success:bool = false
 

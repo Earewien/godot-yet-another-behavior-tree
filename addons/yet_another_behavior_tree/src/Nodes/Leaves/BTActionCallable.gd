@@ -57,7 +57,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 # Fonctions publiques
 #------------------------------------------
 
-func tick(actor:Node2D, blackboard:BTBlackboard) -> int:
+func tick(actor:Node, blackboard:BTBlackboard) -> int:
     _update_argument_expressions()
     var arguments:Array[Variant] = _argument_expression.map(func(expr):return expr.evaluate(actor, blackboard))
     var result:Variant = _method_owner.callv(method_name, arguments)

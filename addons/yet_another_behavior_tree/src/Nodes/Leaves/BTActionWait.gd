@@ -34,7 +34,7 @@ var _time_to_reach_ms:int
 # Fonctions publiques
 #------------------------------------------
 
-func tick(actor:Node2D, blackboard:BTBlackboard) -> int:
+func tick(actor:Node, blackboard:BTBlackboard) -> int:
     _current_time_ms += blackboard.get_delta() * 1_000
     if _current_time_ms <= _time_to_reach_ms:
         return BTTickResult.RUNNING

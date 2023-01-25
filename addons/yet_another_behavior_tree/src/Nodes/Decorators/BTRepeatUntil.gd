@@ -31,7 +31,7 @@ class_name BTRepeatUntil
 # Fonctions publiques
 #------------------------------------------
 
-func tick(actor:Node2D, blackboard:BTBlackboard) -> int:
+func tick(actor:Node, blackboard:BTBlackboard) -> int:
     var result:int
     var not_stopped:bool = true
     var iteration_count:int = 0

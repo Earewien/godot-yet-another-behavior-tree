@@ -44,7 +44,7 @@ func _ready() -> void:
 # Fonctions publiques
 #------------------------------------------
 
-func tick(actor:Node2D, blackboard:BTBlackboard) -> int:
+func tick(actor:Node, blackboard:BTBlackboard) -> int:
     return BTTickResult.SUCCESS
 
 func is_leaf() -> bool:
@@ -78,7 +78,7 @@ func is_valid() -> bool:
 func _update_cached_children(any) -> void:
     _children = get_children().map(_node_as_bt_node)
 
-func _execute(actor:Node2D, blackboard:BTBlackboard) -> int:
+func _execute(actor:Node, blackboard:BTBlackboard) -> int:
     if _is_in_editor:
         return BTTickResult.FAILURE
 

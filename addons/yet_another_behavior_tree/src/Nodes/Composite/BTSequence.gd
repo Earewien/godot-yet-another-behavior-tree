@@ -26,7 +26,7 @@ class_name BTSequence
 # Fonctions Godot redéfinies
 #------------------------------------------
 
-func tick(actor:Node2D, blackboard:BTBlackboard) -> int:
+func tick(actor:Node, blackboard:BTBlackboard) -> int:
     for child in _children:
         var result:int = child._execute(actor, blackboard)
         if result != BTTickResult.SUCCESS:

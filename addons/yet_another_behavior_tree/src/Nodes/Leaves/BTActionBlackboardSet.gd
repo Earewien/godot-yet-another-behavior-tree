@@ -54,7 +54,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 # Fonctions publiques
 #------------------------------------------
 
-func tick(actor:Node2D, blackboard:BTBlackboard) -> int:
+func tick(actor:Node, blackboard:BTBlackboard) -> int:
     if can_overwrite_value or not blackboard.has_data(blackboard_key):
         var value:Variant = _expression.evaluate(actor, blackboard)
         blackboard.set_data(blackboard_key, value)
