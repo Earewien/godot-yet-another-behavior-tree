@@ -1,3 +1,5 @@
+![Discord Banner](https://discordapp.com/api/guilds/1067685170397855754/widget.png?style=banner2)
+
 # Yet Another Behavior Tree
 
 A Behavior Tree implementation for [Godot Engine](https://godotengine.org/)
