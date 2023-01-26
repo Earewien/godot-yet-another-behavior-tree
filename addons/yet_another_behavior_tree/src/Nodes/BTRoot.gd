@@ -64,7 +64,7 @@ func _ready() -> void:
     super._ready()
 
     if not is_valid():
-        enabled = false
+        push_error("BTRoot '%s'(%s) is not valid, check its configuration" % [get_name(), get_instance_id()])
     # Init du blackboard:  soit celui de l'utilisateur, soit un tout neuf
     if blackboard != null and is_instance_valid(blackboard):
         _blackboard= blackboard
