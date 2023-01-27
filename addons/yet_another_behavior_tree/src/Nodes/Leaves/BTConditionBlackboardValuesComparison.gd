@@ -4,12 +4,12 @@ extends BTLeaf
 class_name BTConditionBlackboardValuesComparison
 
 enum Operator {
-    EQUAL,
-    NOT_EQUAL,
-    LOWER,
-    LOWER_OR_EQUAL,
-    GREATER,
-    GREATER_OR_EQUAL
+    EQUAL = 1,
+    NOT_EQUAL = 2,
+    LOWER = 3,
+    LOWER_OR_EQUAL = 4,
+    GREATER = 5,
+    GREATER_OR_EQUAL = 6
 }
 
 #------------------------------------------
@@ -25,7 +25,7 @@ enum Operator {
         first_operand_blackboard_key = value
         update_configuration_warnings()
 
-@export_enum(EQUAL, NOT_EQUAL, LOWER, LOWER_OR_EQUAL, GREATER, GREATER_OR_EQUAL) var operator:int = 0
+@export_enum("EQUAL:1", "NOT_EQUAL:2", "LOWER:3", "LOWER_OR_EQUAL:4", "GREATER:5", "GREATER_OR_EQUAL:6") var operator:int = 0
 
 @export var second_operand_blackboard_key:String = "" :
     set(value):
