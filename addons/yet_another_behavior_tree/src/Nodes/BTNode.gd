@@ -29,12 +29,12 @@ var _children:Array[BTNode] = []
 func _init() -> void:
     super._init()
     if _is_in_editor:
-        child_entered_tree.connect(_update_configuration_warnings_1)
-        child_exiting_tree.connect(_update_configuration_warnings_1)
-        tree_entered.connect(_update_configuration_warnings_0)
-        tree_exited.connect(_update_configuration_warnings_0)
-    child_entered_tree.connect(_update_cached_children)
-    child_exiting_tree.connect(_update_cached_children)
+        _connect_signal_if_needed(child_entered_tree, _update_configuration_warnings_1)
+        _connect_signal_if_needed(child_exiting_tree, _update_configuration_warnings_1)
+        _connect_signal_if_needed(tree_entered, _update_configuration_warnings_0)
+        _connect_signal_if_needed(tree_exited, _update_configuration_warnings_0)
+    _connect_signal_if_needed(child_entered_tree, _update_cached_children)
+    _connect_signal_if_needed(child_exiting_tree, _update_cached_children)
 
 func _ready() -> void:
     if _is_in_editor:
@@ -116,3 +116,6 @@ func _stop(actor:Node2D, blackboard:BTBlackboard) -> void:
 func _exit(blackboard:BTBlackboard) -> void:
     pass
 
+func _connect_signal_if_needed(sig:Signal, callable:Callable) -> void:
+    if not sig.is_connected(callable):
+        sig.connect(callable)
