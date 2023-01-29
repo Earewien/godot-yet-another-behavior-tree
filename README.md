@@ -1,4 +1,4 @@
-![Discord Banner](https://discordapp.com/api/guilds/1067685170397855754/widget.png?style=banner2)
+[![Discord Banner](https://discordapp.com/api/guilds/1067685170397855754/widget.png?style=banner2)](https://discord.gg/SWg6vgcw3F)
 
 # Yet Another Behavior Tree
 
