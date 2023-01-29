@@ -84,11 +84,11 @@ func _execute(actor:Node2D, blackboard:BTBlackboard) -> int:
 
     _enter(blackboard);
 
-    _start(blackboard)
+    _start(actor, blackboard)
 
     var result:int = tick(actor, blackboard)
     if result != BTTickResult.RUNNING:
-        _stop(blackboard)
+        _stop(actor, blackboard)
 
     _exit(blackboard)
     return result
@@ -100,17 +100,19 @@ func _enter(blackboard:BTBlackboard) -> void:
     enter(blackboard)
     pass
 
-func _start(blackboard:BTBlackboard) -> void:
-    blackboard.get_data("running_nodes", []).append(self)
+func _start(actor:Node2D, blackboard:BTBlackboard) -> void:
+    var blackboard_namespace:String = str(actor.get_instance_id())
+    blackboard.get_data("running_nodes", [], blackboard_namespace).append(self)
 
-    if not blackboard.get_data("previously_running_nodes", []).has(self):
+    if not blackboard.get_data("previously_running_nodes", [], blackboard_namespace).has(self):
         start(blackboard)
 
-func _stop(blackboard:BTBlackboard) -> void:
-    blackboard.get_data("running_nodes", []).erase(self)
+func _stop(actor:Node2D, blackboard:BTBlackboard) -> void:
+    var blackboard_namespace:String = str(actor.get_instance_id())
+    blackboard.get_data("running_nodes", [], blackboard_namespace).erase(self)
+    exit(blackboard)
     stop(blackboard)
 
 func _exit(blackboard:BTBlackboard) -> void:
-    exit(blackboard)
     pass
 

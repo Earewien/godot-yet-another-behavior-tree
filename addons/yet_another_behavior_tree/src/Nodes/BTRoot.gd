@@ -36,6 +36,7 @@ signal on_idle()
 @export var blackboard:BTBlackboard = null :
     set(value):
         blackboard = value
+        _update_blackboard()
         update_configuration_warnings()
 
 #------------------------------------------
@@ -49,7 +50,6 @@ signal on_idle()
 var _blackboard:BTBlackboard
 var _previous_running_nodes:Array[BTNode] = []
 var _actor:Node2D
-var _execution_blackboard:BTBlackboard
 
 var _execution_start_time_ms:float
 var _execution_stop_time_ms:float
@@ -66,10 +66,7 @@ func _ready() -> void:
     if not is_valid():
         push_error("BTRoot '%s'(%s) is not valid, check its configuration" % [get_name(), get_instance_id()])
     # Init du blackboard:  soit celui de l'utilisateur, soit un tout neuf
-    if blackboard != null and is_instance_valid(blackboard):
-        _blackboard= blackboard
-    else:
-        _blackboard = BTBlackboard.new()
+    _update_blackboard()
 
     if not Engine.is_editor_hint():
         _add_custom_performance_monitor()
@@ -116,6 +113,12 @@ func _check_actor_validity() -> bool:
         is_valid =_actor != null and is_instance_valid(_actor)
     return is_valid
 
+func _update_blackboard() -> void:
+    if blackboard != null and is_instance_valid(blackboard):
+        _blackboard= blackboard
+    else:
+        _blackboard = BTBlackboard.new()
+
 func _update_actor_from_path() -> void:
     _actor = get_node_or_null(actor_path)
     if not is_instance_valid(_actor) and is_inside_tree():
@@ -124,17 +127,20 @@ func _update_actor_from_path() -> void:
 
 func _do_execute(delta:float):
     _register_execution_start()
+    var blackboard_namespace:String = str(_actor.get_instance_id())
+    # delta est une donnée volatile, elle n'est donc pas dans un namespace puisque chaque arbre tourne
+    # séquentiellement, donc il n'y a pas de collision de données en cas de partage du blackboard
     _blackboard.set_data("delta", delta)
-    _blackboard.set_data("previously_running_nodes", Array(_previous_running_nodes))
-    _blackboard.set_data("running_nodes", [])
+    _blackboard.set_data("previously_running_nodes", Array(_previous_running_nodes), blackboard_namespace)
+    _blackboard.set_data("running_nodes", [], blackboard_namespace)
 
     _children[0]._execute(_actor, _blackboard)
 
-    var running_nodes:Array[BTNode] = _blackboard.get_data("running_nodes", [])
+    var running_nodes:Array[BTNode] = _blackboard.get_data("running_nodes", [], blackboard_namespace)
     if _previous_running_nodes != running_nodes:
         for n in _previous_running_nodes:
             if not running_nodes.has(n):
-                n._stop( _blackboard)
+                n._stop(_actor, _blackboard)
 
         if not running_nodes.is_empty():
             var running_node_names:Array[String] = running_nodes.filter(func(n): return n.is_leaf()).map(func(n): return str(n.name))
