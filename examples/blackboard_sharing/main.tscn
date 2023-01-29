@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://d1s5iyoblr4cm"]
+
+[ext_resource type="Script" path="res://examples/blackboard_sharing/main.gd" id="1_g7q7h"]
+[ext_resource type="PackedScene" uid="uid://7k8r0e84lcr3" path="res://examples/blackboard_sharing/player.tscn" id="2_y55mt"]
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_g7q7h")
+
+[node name="PlayerAlice" parent="." instance=ExtResource("2_y55mt")]
+position = Vector2(509, 181)
+player_name = "Alice"
+
+[node name="PlayerBob" parent="." instance=ExtResource("2_y55mt")]
+position = Vector2(515, 477)
+player_name = "Bob"
+
+[node name="PlayerCharles" parent="." instance=ExtResource("2_y55mt")]
+position = Vector2(309, 324)
+player_name = "Charles"
+
+[node name="PlayerEmily" parent="." instance=ExtResource("2_y55mt")]
+position = Vector2(733, 322)
+player_name = "Emily"

@@ -1,0 +1,124 @@
+[gd_scene load_steps=11 format=3 uid="uid://7k8r0e84lcr3"]
+
+[ext_resource type="Script" path="res://examples/blackboard_sharing/player.gd" id="1_1ti0g"]
+[ext_resource type="Script" path="res://addons/yet_another_behavior_tree/src/Nodes/BTRoot.gd" id="2_sdd0w"]
+[ext_resource type="Script" path="res://addons/yet_another_behavior_tree/src/Nodes/Composite/BTSelector.gd" id="3_2v3m1"]
+[ext_resource type="Script" path="res://addons/yet_another_behavior_tree/src/Nodes/Composite/BTSequence.gd" id="4_fjw5l"]
+[ext_resource type="Script" path="res://addons/yet_another_behavior_tree/src/Nodes/Decorators/BTSuccess.gd" id="4_qnbqx"]
+[ext_resource type="Script" path="res://addons/yet_another_behavior_tree/src/Nodes/Leaves/BTConditionCallable.gd" id="5_8tfvp"]
+[ext_resource type="Script" path="res://addons/yet_another_behavior_tree/src/Nodes/Decorators/BTLimiter.gd" id="5_d3jao"]
+[ext_resource type="Script" path="res://addons/yet_another_behavior_tree/src/Nodes/Leaves/BTActionCallable.gd" id="6_i6lan"]
+[ext_resource type="Script" path="res://addons/yet_another_behavior_tree/src/Nodes/Leaves/BTActionWait.gd" id="10_1e6f0"]
+[ext_resource type="Script" path="res://addons/yet_another_behavior_tree/src/Nodes/Decorators/BTInverter.gd" id="11_fvy66"]
+
+[node name="Player" type="Node2D"]
+script = ExtResource("1_1ti0g")
+
+[node name="Shape" type="Node2D" parent="."]
+
+[node name="Ahahahah" type="Polygon2D" parent="Shape"]
+color = Color(0.188235, 0.490196, 0.505882, 1)
+polygon = PackedVector2Array(-27, -55, 22, -55, 22, -25, 10, -18, 24, 17, -30, 17, -30, 17, -30, 17, -13, -18, -13, -18, -13, -18, -27, -26, -27, -26, -27, -26)
+
+[node name="GUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -61.0
+offset_top = -84.0
+offset_right = 61.0
+offset_bottom = -58.0
+
+[node name="Text" type="Label" parent="GUI"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "My turn !"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Name" type="Label" parent="GUI"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 104.0
+offset_right = 98.0
+offset_bottom = 127.0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BTRoot" type="Node" parent="."]
+script = ExtResource("2_sdd0w")
+actor_path = NodePath("..")
+
+[node name="Do" type="Node" parent="BTRoot"]
+script = ExtResource("4_fjw5l")
+
+[node name="Init" type="Node" parent="BTRoot/Do"]
+script = ExtResource("4_fjw5l")
+save_progression = true
+
+[node name="Declare I am playing" type="Node" parent="BTRoot/Do/Init"]
+script = ExtResource("4_qnbqx")
+
+[node name="Do once" type="Node" parent="BTRoot/Do/Init/Declare I am playing"]
+script = ExtResource("5_d3jao")
+
+[node name="I\'m here !" type="Node" parent="BTRoot/Do/Init/Declare I am playing/Do once"]
+script = ExtResource("6_i6lan")
+method_owner_path = NodePath("../../../../../..")
+method_name = "declare_presence"
+method_arguments = ["blackboard"]
+
+[node name="Invert" type="Node" parent="BTRoot/Do/Init"]
+script = ExtResource("11_fvy66")
+
+[node name="Do once" type="Node" parent="BTRoot/Do/Init/Invert"]
+script = ExtResource("5_d3jao")
+
+[node name="Wait 1s" type="Node" parent="BTRoot/Do/Init/Invert/Do once"]
+script = ExtResource("10_1e6f0")
+
+[node name="One Between" type="Node" parent="BTRoot/Do"]
+script = ExtResource("3_2v3m1")
+save_progression = true
+
+[node name="I must talk" type="Node" parent="BTRoot/Do/One Between"]
+script = ExtResource("4_fjw5l")
+save_progression = true
+
+[node name="Is my Turn ?" type="Node" parent="BTRoot/Do/One Between/I must talk"]
+script = ExtResource("5_8tfvp")
+method_owner_path = NodePath("../../../../..")
+method_name = "is_my_turn_to_talk"
+method_arguments = ["blackboard.get_data(\"next_talking\")"]
+
+[node name="Talk" type="Node" parent="BTRoot/Do/One Between/I must talk"]
+script = ExtResource("6_i6lan")
+method_owner_path = NodePath("../../../../..")
+method_name = "talk"
+method_arguments = []
+
+[node name="Wait a little bit" type="Node" parent="BTRoot/Do/One Between/I must talk"]
+script = ExtResource("10_1e6f0")
+random_deviation_ms = 300
+
+[node name="Set Next Player To Talk" type="Node" parent="BTRoot/Do/One Between/I must talk"]
+script = ExtResource("6_i6lan")
+method_owner_path = NodePath("../../../../..")
+method_name = "choose_next_player_talking"
+method_arguments = ["blackboard"]
+
+[node name="I must listen" type="Node" parent="BTRoot/Do/One Between"]
+script = ExtResource("4_fjw5l")
+
+[node name="Not my turn" type="Node" parent="BTRoot/Do/One Between/I must listen"]
+script = ExtResource("11_fvy66")
+
+[node name="Is my Turn ?" type="Node" parent="BTRoot/Do/One Between/I must listen/Not my turn"]
+script = ExtResource("5_8tfvp")
+method_owner_path = NodePath("../../../../../..")
+method_name = "is_my_turn_to_talk"
+method_arguments = ["blackboard.get_data(\"next_talking\")"]
