@@ -1,0 +1,104 @@
+[gd_scene load_steps=8 format=3 uid="uid://ccttcdvcigdoe"]
+
+[ext_resource type="Script" path="res://examples/simple_ai_logic/main.gd" id="1_23dkn"]
+[ext_resource type="PackedScene" uid="uid://i4372roabk7a" path="res://examples/simple_ai_logic/env/warehouse.tscn" id="2_hh1py"]
+[ext_resource type="PackedScene" path="res://examples/simple_ai_logic/env/tree.tscn" id="3_qyub5"]
+[ext_resource type="PackedScene" path="res://examples/simple_ai_logic/lumberjack.tscn" id="4_782kh"]
+
+[sub_resource type="Gradient" id="Gradient_rssdc"]
+colors = PackedColorArray(0.787759, 0.787759, 0.787759, 1, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ql20u"]
+noise_type = 2
+frequency = 0.005
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_181qe"]
+width = 2050
+height = 2050
+color_ramp = SubResource("Gradient_rssdc")
+noise = SubResource("FastNoiseLite_ql20u")
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_23dkn")
+
+[node name="Background" type="Polygon2D" parent="."]
+color = Color(0.466667, 0.670588, 0, 1)
+texture = SubResource("NoiseTexture2D_181qe")
+polygon = PackedVector2Array(-7, -7, -7, -7, -7, 651, -7, 651, -7, 651, -7, 651, -7, 651, -7, 651, -7, 651, -7, 651, -7, 651, -7, 651, -7, 651, -7, 651, -7, 651, -7, 651, -7, 651, -7, 651, -7, 651, 1160, 655, 1160, 655, 1160, 655, 1160, 655, 1160, 655, 1160, 655, 1160, 655, 1160, 655, 1160, 655, 1160, 655, 1160, 655, 1160, 655, 1160, 655, 1160, 655, 1160, 655, 1160, 655, 1160, 655, 1159, -7, 1159, -7, 1159, -7, 1159, -7, 1159, -7, 1159, -7, 1159, -7, 1159, -7, 1159, -7, 1159, -7, 1159, -7, 1159, -7, 1159, -7, 1159, -7, 1159, -7, 1159, -7, 1159, -7)
+
+[node name="Warehouses" type="Node2D" parent="."]
+
+[node name="Warehouse1" parent="Warehouses" instance=ExtResource("2_hh1py")]
+position = Vector2(805, 229)
+
+[node name="Warehouse2" parent="Warehouses" instance=ExtResource("2_hh1py")]
+position = Vector2(268, 556)
+
+[node name="Trees" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Tree" parent="Trees" instance=ExtResource("3_qyub5")]
+position = Vector2(132, 126)
+
+[node name="Tree2" parent="Trees" instance=ExtResource("3_qyub5")]
+position = Vector2(46, 69)
+
+[node name="Tree3" parent="Trees" instance=ExtResource("3_qyub5")]
+position = Vector2(186, 110)
+
+[node name="Tree4" parent="Trees" instance=ExtResource("3_qyub5")]
+position = Vector2(78, 126)
+
+[node name="Tree5" parent="Trees" instance=ExtResource("3_qyub5")]
+position = Vector2(140, 185)
+
+[node name="Tree6" parent="Trees" instance=ExtResource("3_qyub5")]
+position = Vector2(83, 215)
+
+[node name="Tree7" parent="Trees" instance=ExtResource("3_qyub5")]
+position = Vector2(581, 604)
+
+[node name="Tree8" parent="Trees" instance=ExtResource("3_qyub5")]
+position = Vector2(465, 473)
+
+[node name="Tree9" parent="Trees" instance=ExtResource("3_qyub5")]
+position = Vector2(503, 523)
+
+[node name="Tree10" parent="Trees" instance=ExtResource("3_qyub5")]
+position = Vector2(541, 495)
+
+[node name="Tree11" parent="Trees" instance=ExtResource("3_qyub5")]
+position = Vector2(1044, 124)
+
+[node name="Tree12" parent="Trees" instance=ExtResource("3_qyub5")]
+position = Vector2(1074, 235)
+
+[node name="Tree13" parent="Trees" instance=ExtResource("3_qyub5")]
+position = Vector2(976, 178)
+
+[node name="Tree14" parent="Trees" instance=ExtResource("3_qyub5")]
+position = Vector2(1035, 188)
+
+[node name="Tree15" parent="Trees" instance=ExtResource("3_qyub5")]
+position = Vector2(1091, 155)
+
+[node name="Tree16" parent="Trees" instance=ExtResource("3_qyub5")]
+position = Vector2(998, 101)
+
+[node name="GUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ControlDesc" type="Label" parent="GUI"]
+layout_mode = 0
+offset_left = 23.0
+offset_top = 605.0
+offset_right = 371.0
+offset_bottom = 631.0
+text = "SPACE : plant a tree at mouse location"
+
+[node name="LumberJack" parent="." instance=ExtResource("4_782kh")]
+position = Vector2(685, 300)
+scale = Vector2(3.5, 3.5)

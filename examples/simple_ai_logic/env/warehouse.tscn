@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://i4372roabk7a"]
+
+[node name="Warehouse" type="Node2D" groups=["warehouse"]]
+
+[node name="Shape" type="Polygon2D" parent="."]
+position = Vector2(0, 7)
+scale = Vector2(0.28841, 0.28841)
+color = Color(0.270588, 0.145098, 0.0117647, 1)
+polygon = PackedVector2Array(-110.953, 0, 232.308, 0, 232.308, -225.374, 138.691, -298.187, -180.299, -218.439, -110.953, -218.439)
