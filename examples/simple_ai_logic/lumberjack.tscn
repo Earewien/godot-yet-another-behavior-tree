@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=11 format=3 uid="uid://bl8kvanpmae2g"]
 
 [ext_resource type="Script" path="res://examples/simple_ai_logic/lumberjack.gd" id="1_4c8nf"]
 [ext_resource type="Script" path="res://addons/yet_another_behavior_tree/src/Nodes/BTRoot.gd" id="2_hoy6d"]
@@ -8,7 +8,7 @@
 [ext_resource type="Script" path="res://addons/yet_another_behavior_tree/src/Nodes/Leaves/BTConditionCallable.gd" id="6_wov0v"]
 [ext_resource type="Script" path="res://addons/yet_another_behavior_tree/src/Nodes/Leaves/BTActionBlackboardSet.gd" id="7_f8o6y"]
 [ext_resource type="Script" path="res://addons/yet_another_behavior_tree/src/Nodes/Leaves/BTActionCallable.gd" id="8_mjt8i"]
-[ext_resource type="Script" path="res://addons/yet_another_behavior_tree/src/Nodes/Decorators/BTSuccess.gd" id="9_1faoi"]
+[ext_resource type="Script" path="res://addons/yet_another_behavior_tree/src/Nodes/Decorators/BTFailure.gd" id="9_ojjv5"]
 [ext_resource type="Script" path="res://addons/yet_another_behavior_tree/src/Nodes/Leaves/BTActionBlackboardDelete.gd" id="10_7bq5a"]
 
 [node name="LumberJack" type="Node2D"]
@@ -23,7 +23,6 @@ polygon = PackedVector2Array(-2, -5, -2, -2, -1, -2, -1, 0, -4, 5, -5, 5, -5, 5,
 [node name="AI" type="Node" parent="."]
 script = ExtResource("2_hoy6d")
 actor_path = NodePath("..")
-blackboard = NodePath("")
 
 [node name="One Between" type="Node" parent="AI"]
 script = ExtResource("3_5vl0m")
@@ -51,7 +50,7 @@ script = ExtResource("4_c83di")
 
 [node name="Get Nearest Warehouse" type="Node" parent="AI/One Between/Idle To Warehouse/Move To Nearest Warehouse"]
 script = ExtResource("7_f8o6y")
-blackboard_key = "nearest_wharehouse"
+blackboard_key = "nearest_warehouse"
 expression = "actor.get_nearest_warehouse()"
 can_overwrite_value = true
 
@@ -59,7 +58,7 @@ can_overwrite_value = true
 script = ExtResource("8_mjt8i")
 method_owner_path = NodePath("../../../../..")
 method_name = "move_to"
-method_arguments = ["delta", "blackboard.get_data(\"nearest_wharehouse\")"]
+method_arguments = ["delta", "blackboard.get_data(\"nearest_warehouse\")"]
 
 [node name="Put Logs To Warehouse" type="Node" parent="AI/One Between"]
 script = ExtResource("4_c83di")
@@ -90,7 +89,7 @@ script = ExtResource("4_c83di")
 
 [node name="Get Nearest Warehouse" type="Node" parent="AI/One Between/Put Logs To Warehouse/Move To Nearest Warehouse"]
 script = ExtResource("7_f8o6y")
-blackboard_key = "nearest_wharehouse"
+blackboard_key = "nearest_warehouse"
 expression = "actor.get_nearest_warehouse()"
 can_overwrite_value = true
 
@@ -98,7 +97,7 @@ can_overwrite_value = true
 script = ExtResource("8_mjt8i")
 method_owner_path = NodePath("../../../../..")
 method_name = "move_to"
-method_arguments = ["delta", "blackboard.get_data(\"nearest_wharehouse\")"]
+method_arguments = ["delta", "blackboard.get_data(\"nearest_warehouse\")"]
 
 [node name="Drop Logs" type="Node" parent="AI/One Between/Put Logs To Warehouse"]
 script = ExtResource("8_mjt8i")
@@ -129,30 +128,30 @@ script = ExtResource("7_f8o6y")
 blackboard_key = "nearest_tree"
 expression = "actor.get_nearest_tree()"
 
-[node name="Move To Nearest Tree" type="Node" parent="AI/One Between/Get Log/Move To Nearest Tree"]
-script = ExtResource("8_mjt8i")
-method_owner_path = NodePath("../../../../..")
-method_name = "move_to"
-method_arguments = ["delta", "blackboard.get_data(\"nearest_tree\")"]
-
-[node name="Check Nearest Tree Still Is Valid" type="Node" parent="AI/One Between/Get Log"]
-script = ExtResource("9_1faoi")
-
-[node name="Clear Nearest Tree If Invalid" type="Node" parent="AI/One Between/Get Log/Check Nearest Tree Still Is Valid"]
+[node name="Stop If Nearest Tree If Invalid" type="Node" parent="AI/One Between/Get Log"]
 script = ExtResource("4_c83di")
 
-[node name="Tree Is Invalid" type="Node" parent="AI/One Between/Get Log/Check Nearest Tree Still Is Valid/Clear Nearest Tree If Invalid"]
-script = ExtResource("5_iaq0m")
+[node name="OR" type="Node" parent="AI/One Between/Get Log/Stop If Nearest Tree If Invalid"]
+script = ExtResource("3_5vl0m")
 
-[node name="Tree Is Valid" type="Node" parent="AI/One Between/Get Log/Check Nearest Tree Still Is Valid/Clear Nearest Tree If Invalid/Tree Is Invalid"]
+[node name="Tree Is Valid" type="Node" parent="AI/One Between/Get Log/Stop If Nearest Tree If Invalid/OR"]
 script = ExtResource("6_wov0v")
-method_owner_path = NodePath("../../../../../../..")
+method_owner_path = NodePath("../../../../../..")
 method_name = "tree_is_valid"
 method_arguments = ["blackboard.get_data(\"nearest_tree\")"]
 
-[node name="Delete Nearest Tree Ref" type="Node" parent="AI/One Between/Get Log/Check Nearest Tree Still Is Valid/Clear Nearest Tree If Invalid"]
+[node name="Stop Because Tree Invalid" type="Node" parent="AI/One Between/Get Log/Stop If Nearest Tree If Invalid/OR"]
+script = ExtResource("9_ojjv5")
+
+[node name="Delete Nearest Tree Ref" type="Node" parent="AI/One Between/Get Log/Stop If Nearest Tree If Invalid/OR/Stop Because Tree Invalid"]
 script = ExtResource("10_7bq5a")
 blackboard_key = "nearest_tree"
+
+[node name="Move To Tree" type="Node" parent="AI/One Between/Get Log"]
+script = ExtResource("8_mjt8i")
+method_owner_path = NodePath("../../../..")
+method_name = "move_to"
+method_arguments = ["delta", "blackboard.get_data(\"nearest_tree\")"]
 
 [node name="Cut Tree" type="Node" parent="AI/One Between/Get Log"]
 script = ExtResource("4_c83di")

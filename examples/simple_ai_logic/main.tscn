@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://examples/simple_ai_logic/main.gd" id="1_23dkn"]
 [ext_resource type="PackedScene" uid="uid://i4372roabk7a" path="res://examples/simple_ai_logic/env/warehouse.tscn" id="2_hh1py"]
 [ext_resource type="PackedScene" path="res://examples/simple_ai_logic/env/tree.tscn" id="3_qyub5"]
-[ext_resource type="PackedScene" path="res://examples/simple_ai_logic/lumberjack.tscn" id="4_782kh"]
+[ext_resource type="PackedScene" uid="uid://bl8kvanpmae2g" path="res://examples/simple_ai_logic/lumberjack.tscn" id="4_782kh"]
 
 [sub_resource type="Gradient" id="Gradient_rssdc"]
 colors = PackedColorArray(0.787759, 0.787759, 0.787759, 1, 1, 1, 1, 1)

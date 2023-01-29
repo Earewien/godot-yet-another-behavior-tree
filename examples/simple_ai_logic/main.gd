@@ -20,7 +20,7 @@ extends Node2D
 # Fonctions Godot redéfinies
 #------------------------------------------
 
-func _process(delta:float) -> void:
+func _process(_delta:float) -> void:
     if Input.is_action_just_released("ui_accept"):
         var new_tree:Node2D = preload("res://examples/simple_ai_logic/env/tree.tscn").instantiate()
         new_tree.global_position = get_global_mouse_position()
