@@ -136,14 +136,19 @@ func _do_execute(delta:float):
 
     _children[0]._execute(_actor, _blackboard)
 
-    var running_nodes:Array[BTNode] = _blackboard.get_data("running_nodes", [], blackboard_namespace)
+    var raw_running_nodes:Array = _blackboard.get_data("running_nodes", [], blackboard_namespace)
+    var running_nodes:Array[BTNode] = []
+    running_nodes.append_array(raw_running_nodes)
     if _previous_running_nodes != running_nodes:
         for n in _previous_running_nodes:
             if not running_nodes.has(n):
                 n._stop(_actor, _blackboard)
 
         if not running_nodes.is_empty():
-            var running_node_names:Array[String] = running_nodes.filter(func(n): return n.is_leaf()).map(func(n): return str(n.name))
+            var running_node_names:Array[String] = []
+            for running_node in running_nodes:
+                if running_node.is_leaf():
+                    running_node_names.append(str(running_node.name))
             on_running.emit(running_node_names)
         else:
             on_idle.emit()

@@ -76,7 +76,10 @@ func is_valid() -> bool:
     return false
 
 func _update_cached_children(any) -> void:
-    _children = get_children().map(_node_as_bt_node)
+    _children.clear()
+    for child in get_children():
+        if child is BTNode:
+            _children.append(child)
 
 func _execute(actor:Node2D, blackboard:BTBlackboard) -> int:
     if _is_in_editor:
@@ -92,9 +95,6 @@ func _execute(actor:Node2D, blackboard:BTBlackboard) -> int:
 
     _exit(blackboard)
     return result
-
-func _node_as_bt_node(node:Node) -> BTNode:
-    return node as BTNode
 
 func _enter(blackboard:BTBlackboard) -> void:
     enter(blackboard)
