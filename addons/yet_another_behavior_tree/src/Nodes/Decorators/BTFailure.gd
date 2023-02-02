@@ -1,7 +1,11 @@
 @tool
 @icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btfailure.png")
-extends BTDecorator
 class_name BTFailure
+extends BTDecorator
+
+
+## The failure node is a [i]decorator[/i] node that always returns [i]failed[/i] on child execution.
+
 
 #------------------------------------------
 # Signaux

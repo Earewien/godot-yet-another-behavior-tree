@@ -1,7 +1,12 @@
 @tool
 @icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btrandomselector.png")
-extends BTSelector
 class_name BTRandomSelector
+extends BTSelector
+
+
+## The random selector node is a [i]composite node[/i] that behaves like the [code]BTSelector[/code] node,
+## except that it executes its children in random order.
+
 
 #------------------------------------------
 # Signaux

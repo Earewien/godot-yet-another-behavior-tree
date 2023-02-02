@@ -1,6 +1,16 @@
 @icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btblackboard.png")
-extends Node
 class_name BTBlackboard
+extends Node
+
+
+## Blackboard allows to share data across nodes and behavior trees. You can create/retrieve/erase
+## pairs of key-value. Keys and values are variants and can be anything.
+## [br][br]
+## Data in blackboard can be isolated in so-called [i]namespaces[/i]. A data key can exists only once in
+## a namespace, but can exists multiple times across namespaces, allowing the user to isolate data when,
+## for example, a blackboard is shared between multiple behavior trees. By default, if no namespace is
+## specified when inserting a data into a blackboard, the [i]default namespace[/i] is used.
+
 
 const DEFAULT_NAMESPACE:String = "_default_namespace"
 
@@ -16,7 +26,10 @@ const DEFAULT_NAMESPACE:String = "_default_namespace"
 # Variables publiques
 #------------------------------------------
 
-## Will be added to default namespace !
+## A dictionnary allowing to specifies default entries before tree first execution.
+## [br][br]
+## Those entries are added in the default namespace of the blackboard. If you want to add default entries
+## in another namespace, you must do it in a script.
 @export var data:Dictionary = {}
 
 #------------------------------------------

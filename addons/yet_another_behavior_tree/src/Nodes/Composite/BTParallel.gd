@@ -1,7 +1,13 @@
 @tool
 @icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btparallel.png")
-extends BTComposite
 class_name BTParallel
+extends BTComposite
+
+
+## The parallel node is a [i]composite node[/i] that executes all its children at each [code]tick[/code].
+## If at least one child is is running, the parallel reports it's running too. If no child is running,
+## then if at least one child succeeded, the parallel reports success, else it reports failure.
+
 
 #------------------------------------------
 # Signaux
@@ -34,7 +40,7 @@ func tick(actor:Node2D, blackboard:BTBlackboard) -> int:
         if result == BTTickResult.RUNNING:
             at_least_one_child_running = true
 
-    # At least one runn ing : this is still running !
+    # At least one running : this is still running !
     if at_least_one_child_running:
         return BTTickResult.RUNNING
     # No one is running, so, at least one success > success, else failure

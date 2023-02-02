@@ -1,7 +1,13 @@
 @tool
 @icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btactionwait.png")
-extends BTLeaf
 class_name BTActionWait
+extends BTLeaf
+
+
+## The wait action node is a [i]leaf[/i] node. Its execution returns [i]running[/i] during the specified wait time,
+## then returns *success* when specified time is elapsed. After succeeded, the wait time is rearmed for next
+## tree execution.
+
 
 #------------------------------------------
 # Signaux
@@ -11,8 +17,11 @@ class_name BTActionWait
 # Exports
 #------------------------------------------
 
+## Number of milliseconds to wait before returning [i]success[/i]
 @export var wait_time_ms:int = 1_000
 
+## Indicates if a random deviation should be applied to the wait time. [code]0[/code] means there is no
+## deviation et the wait time will be strictyl respected. Random deviation may change after each node rearm.
 @export var random_deviation_ms:int = 0
 
 #------------------------------------------

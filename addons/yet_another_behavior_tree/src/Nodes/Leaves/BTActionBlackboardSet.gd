@@ -1,7 +1,12 @@
 @tool
 @icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btactionblackboardset.png")
-extends BTLeaf
 class_name BTActionBlackboardSet
+extends BTLeaf
+
+
+## The blackboard set action node is a [i]leaf[/i] node. It allows to set a value in the blackboard.
+## Its execution always returns [i]success[/i]. This node operates in the blackboard [i]default namespace[/i].
+
 
 #------------------------------------------
 # Signaux
@@ -11,11 +16,18 @@ class_name BTActionBlackboardSet
 # Exports
 #------------------------------------------
 
+## Name of the key that must be set, in [i]default namespace[/i]
 @export var blackboard_key:String = "" :
     set(value):
         blackboard_key = value
         update_configuration_warnings()
 
+## An expression representing the value to associated to the given key. The expression will be evaluated by
+## Godot Engine during child execution. It should be simple. See [url=https://docs.godotengine.org/en/latest/classes/class_expression.html]Godot Expression[/url]
+## for details. In expression, user has access to two predefined variables:[br]
+##  - [code]actor[/code]: the node the tree is describing action for,[br]
+##  - [code]blackboard[/code]: the tree blackboard,[br]
+##  - [code]delta[/code]: the [i]_process[/i] or [i]_physics_process[/i] delta value, as a [code]float[/code].
 @export_multiline var expression:String = "" :
     set(value):
         if value != expression:
@@ -23,6 +35,7 @@ class_name BTActionBlackboardSet
             _update_expression()
             update_configuration_warnings()
 
+## Indicates if the value must be overwritten if it already exists or not
 @export var can_overwrite_value:bool = false
 
 #------------------------------------------

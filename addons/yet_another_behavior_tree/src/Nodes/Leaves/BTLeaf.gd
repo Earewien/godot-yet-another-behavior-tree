@@ -1,7 +1,14 @@
 @tool
 @icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btleaf.png")
-extends BTNode
 class_name BTLeaf
+extends BTNode
+
+
+## Base object for all behavior tree leaves.
+## Leaf nodes, as their name implies, do not have any child. They represents basic unit of work of your
+## AI, which can be separated into two notions: conditions and actions.
+## [b][u]This node should never be used directly.[/u][/b]
+
 
 #------------------------------------------
 # Signaux

@@ -70,7 +70,7 @@ script = ExtResource("5_d3jao")
 script = ExtResource("6_i6lan")
 method_owner_path = NodePath("../../../../../..")
 method_name = "declare_presence"
-method_arguments = ["blackboard"]
+method_arguments = Array[String](["blackboard"])
 
 [node name="Invert" type="Node" parent="BTRoot/Do/Init"]
 script = ExtResource("11_fvy66")
@@ -93,13 +93,12 @@ save_progression = true
 script = ExtResource("5_8tfvp")
 method_owner_path = NodePath("../../../../..")
 method_name = "is_my_turn_to_talk"
-method_arguments = ["blackboard.get_data(\"next_talking\")"]
+method_arguments = Array[String](["blackboard.get_data(\"next_talking\")"])
 
 [node name="Talk" type="Node" parent="BTRoot/Do/One Between/I must talk"]
 script = ExtResource("6_i6lan")
 method_owner_path = NodePath("../../../../..")
 method_name = "talk"
-method_arguments = []
 
 [node name="Wait a little bit" type="Node" parent="BTRoot/Do/One Between/I must talk"]
 script = ExtResource("10_1e6f0")
@@ -109,7 +108,7 @@ random_deviation_ms = 300
 script = ExtResource("6_i6lan")
 method_owner_path = NodePath("../../../../..")
 method_name = "choose_next_player_talking"
-method_arguments = ["blackboard"]
+method_arguments = Array[String](["blackboard"])
 
 [node name="I must listen" type="Node" parent="BTRoot/Do/One Between"]
 script = ExtResource("4_fjw5l")
@@ -121,4 +120,4 @@ script = ExtResource("11_fvy66")
 script = ExtResource("5_8tfvp")
 method_owner_path = NodePath("../../../../../..")
 method_name = "is_my_turn_to_talk"
-method_arguments = ["blackboard.get_data(\"next_talking\")"]
+method_arguments = Array[String](["blackboard.get_data(\"next_talking\")"])

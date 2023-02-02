@@ -1,7 +1,13 @@
 @tool
 @icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btselector.png")
-extends BTComposite
 class_name BTSelector
+extends BTComposite
+
+
+## The selector node is a [i]composite node[/i] that executes its children from the first one to the last one,
+## in order, until one of them returns [code]SUCCESS[/code]. If a selector child succeeds, the selector
+## succeed too. If all selector children failed, the selector fails too.
+
 
 #------------------------------------------
 # Signaux
@@ -11,6 +17,9 @@ class_name BTSelector
 # Exports
 #------------------------------------------
 
+## Indicates whether the selector should resume to the last running child on next tree execution ([code]on[/code]),
+## or restart from its first child ([code]off[/code]). Its usefull to describe a non-interruptible action,
+## or to optimize process time.
 @export var save_progression:bool = false
 
 #------------------------------------------

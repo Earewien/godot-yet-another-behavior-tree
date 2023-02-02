@@ -1,7 +1,12 @@
 @tool
 @icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btnode.png")
-extends Node
 class_name BTNode
+extends Node
+
+
+## Base object for all behavior tree nodes.
+## [b][u]This node should never be used directly.[/u][/b]
+
 
 #------------------------------------------
 # Signaux

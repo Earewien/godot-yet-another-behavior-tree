@@ -1,7 +1,12 @@
 @tool
 @icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btactionblackboarddelete.png")
-extends BTLeaf
 class_name BTActionBlackboardDelete
+extends BTLeaf
+
+
+## The blackboard delete action node is a [i]leaf[/i] node. It allows to erase a key from the tree blackboard.
+## This node operates in the blackboard [i]default namespace[/i].
+
 
 #------------------------------------------
 # Signaux
@@ -11,6 +16,7 @@ class_name BTActionBlackboardDelete
 # Exports
 #------------------------------------------
 
+## Name of the key that must be erased from blackboard, in [i]default namespace[/i]
 @export var blackboard_key:String = "" :
     set(value):
         blackboard_key = value

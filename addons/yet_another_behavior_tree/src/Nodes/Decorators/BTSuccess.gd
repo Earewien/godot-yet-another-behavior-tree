@@ -1,7 +1,11 @@
 @tool
 @icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btsuccess.png")
-extends BTDecorator
 class_name BTSuccess
+extends BTDecorator
+
+
+## The success node is a [i]decorator[/i] node that always returns [i]success[/i] on child execution.
+
 
 #------------------------------------------
 # Signaux

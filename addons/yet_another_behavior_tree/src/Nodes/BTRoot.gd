@@ -1,7 +1,23 @@
 @tool
 @icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btroot.png")
-extends BTNode
 class_name BTRoot
+extends BTNode
+
+
+## This behavior tree is a Godot node that can be added to your Scene tree. The logic inside tree nodes
+## will be run every frame, during process or physics process, depending on tree process mode.
+## [br][br]
+## At each frame, the [code]tick[/code] function of tree nodes will be run. This function has access to the
+## [i]actor[/i] (the node the tree is describing behavior for), and a [i]blackboard[/i] (allowing to share
+## data between nodes). The tick function can either returns:
+## [br]
+## - [code]SUCCESS[/code], indicating that node execution is successful,[br]
+## - [code]RUNNING[/code], indicating that node is doing a long computation/action/whatever you want, that is not finished yet,[br]
+## - [code]FAILURE[/code], indicating that something went wrong during child execution (condition not met, ...).
+## [br][br]
+## Depending on your tree structure, node result will produce various behaviors. See node documentation for
+## mor details.
+
 
 enum BTRootProcessMode {
     PROCESS,
@@ -19,20 +35,27 @@ signal on_idle()
 # Exports
 #------------------------------------------
 
+## Indicates if tree should run or not
 @export var enabled:bool = true:
     set(value):
         enabled = value
         set_process(enabled)
         set_physics_process(enabled)
 
+## Indicates whether tree should execute during [i]process[/i] or [i]physics process[/i].
 @export var root_process_mode:BTRootProcessMode = BTRootProcessMode.PHYSIC_PROCESS
 
+## Path to the node that the tree is drescribing actions for. This is the node that will be passed to all
+## tree nodes, allowing you to manipulate the actor at every tree step.
 @export var actor_path:NodePath :
     set(value):
         actor_path = value
         _update_actor_from_path()
         update_configuration_warnings()
 
+## Path to the blackboard node. This allows to share a same blackboard between several trees, for example to code
+## a group of enemies acting together, or to specify some default entries using the editor. If empty, a default
+## empty blackboard will be used during tree execution.
 @export var blackboard:BTBlackboard = null :
     set(value):
         blackboard = value

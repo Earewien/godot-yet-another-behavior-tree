@@ -1,7 +1,14 @@
 @tool
 @icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btrepeatuntil.png")
-extends BTDecorator
 class_name BTRepeatUntil
+extends BTDecorator
+
+
+## The repeat until node is a [i]decorator[/i] node that loop its child execution until child execution result
+## is as excepted. It is possible to specifies the maximum number of loop execution allowed to obtain the desired
+## result. If desired result is obtained before the loop execution limit, the repeat until node returns the
+## obtained result. If not, its returns a [i]failure[/i].
+
 
 #------------------------------------------
 # Signaux
@@ -11,8 +18,12 @@ class_name BTRepeatUntil
 # Exports
 #------------------------------------------
 
+## Expected child result to stop the loop.
 @export_enum("SUCCESS:0", "RUNNING:1", "FAILURE:2") var stop_condition:int = 0
 
+## Maximum number of child execution to obtain the desired result. If value is [code]0[/code], there is
+## [b]no limit[/b] to the number of times the loop can run (⚠️ be careful to not create an infinite loop).
+## If value is more than zero, its represents the maximum number of loop execution.
 @export_range(0, 999999) var max_iteration:int = 0
 
 #------------------------------------------

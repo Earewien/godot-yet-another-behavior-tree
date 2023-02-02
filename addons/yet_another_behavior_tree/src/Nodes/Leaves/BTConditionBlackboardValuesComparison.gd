@@ -1,7 +1,13 @@
 @tool
 @icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btconditionblackboardvaluescomparison.png")
-extends BTLeaf
 class_name BTConditionBlackboardValuesComparison
+extends BTLeaf
+
+
+## The blackboard values comparison condition node is a [i]leaf[/i] node. It returns [i]success[/i] both values
+## represented by specified keys returns true when compared using the given operator. This node operates in the blackboard
+## [i]default namespace[/i].
+
 
 enum Operator {
     EQUAL = 1,
@@ -20,13 +26,16 @@ enum Operator {
 # Exports
 #------------------------------------------
 
+## Name of the key that old the first value to compare, in [i]default namespace[/i]
 @export var first_operand_blackboard_key:String = "" :
     set(value):
         first_operand_blackboard_key = value
         update_configuration_warnings()
 
+## Operator used to compare values
 @export_enum("EQUAL:1", "NOT_EQUAL:2", "LOWER:3", "LOWER_OR_EQUAL:4", "GREATER:5", "GREATER_OR_EQUAL:6") var operator:int = 0
 
+## Name of the key that old the second value to compare, [i]default namespace[/i]
 @export var second_operand_blackboard_key:String = "" :
     set(value):
         second_operand_blackboard_key = value

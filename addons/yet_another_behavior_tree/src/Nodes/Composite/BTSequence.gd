@@ -1,7 +1,12 @@
 @tool
 @icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btsequence.png")
-extends BTComposite
 class_name BTSequence
+extends BTComposite
+
+
+## The sequence node is a [i]composite node[/i] that executes its children from the first one to the last
+## one, until all children succeed or one of its children fails. If all children succeed, the sequence
+## succeeds too ; if one child fails, the sequence fails too.
 
 
 #------------------------------------------
@@ -12,6 +17,9 @@ class_name BTSequence
 # Exports
 #------------------------------------------
 
+## Indicates whether the sequence should resume to the last running child on next tree execution ([code]on[/code]),
+## or restart from its first child ([code]off[/code]). Its usefull to describe a non-interruptible action, or to
+## optimize process time.
 @export var save_progression:bool = false
 
 #------------------------------------------

@@ -36,16 +36,17 @@ Depending on your tree structure, node result will produce various behaviors. Se
 
 ### ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btblackboard.png) BTBlackboard
 
-Blackboard allows to share data across nodes and behavior trees. You can create/retreieve/erase pairs of key-value. Keys and values are variants and can be anything.
+Blackboard allows to share data across nodes and behavior trees. You can create/retrieve/erase pairs of key-value. Keys and values are variants and can be anything.
+
+Data in blackboard can be isolated in so-called *namespaces*. A data key can exists only once in a namespace, but can exists multiple times across namespaces, allowing the user to isolate data when, for example, a blackboard is shared between multiple behavior trees. By default, if no namespace is specified when inserting a data into a blackboard, the *default namespace* is used.
 
 Some well-known properties are already fed by the root tree during execution :
 - `delta` : the float value of delta from *process* or *physics process* (depending on root tree process mode).
 
-
 ![image](documentation/assets/nodes/btblackboard.png)
 
 🔑 Properties list:
-- `data` : a dictionnary allowing to specifies default entries before tree first execution.
+- `data` : a dictionnary allowing to specifies default entries before tree first execution. Those entries are added in the default namespace of the blackboard. If you want to add default entries in another namespace, you must do it in a script.
 
 ###  ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btroot.png) BTRoot
 
@@ -54,10 +55,10 @@ Its the entry point of your behavior tree. It can only have a unique child of ty
 ![image](documentation/assets/nodes/btroot.png)
 
 🔑 Properties list:
-- `enabled` : indicates if tree should run or non. Default is *on*,
+- `enabled` : indicates if tree should run or not. Default is *on*,
 - `root_process_mode` : indicates whether tree should execute during *process* or *physics process*. Default is *physics process*,
 - `actor_path` : path to the node that the tree is drescribing actions for. This is the node that will be passed to all tree nodes, allowing you to manipulate the actor at every tree step. Default is *empty*.
-- `blackboard` : path to the blackboard node. This allows to share a same blackboard between several trees, for example to code a group of enemies acting together, or to spécify some default entries using the editor. If empty, a default empty blackboard will be used during tree execution. Default is *empty*.
+- `blackboard` : path to the blackboard node. This allows to share a same blackboard between several trees, for example to code a group of enemies acting together, or to specify some default entries using the editor. If empty, a default empty blackboard will be used during tree execution. Default is *empty*.
 
 ###  ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btselector.png) BTSelector
 
@@ -70,7 +71,7 @@ The selector node is a *composite node* that executes its children from the firs
 
 ###  ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btrandomselector.png) BTRandomSelector
 
-The random selector node is a *composite node* behaves like the `BTSelector` node, except that it executes its children in random order.
+The random selector node is a *composite node* that behaves like the `BTSelector` node, except that it executes its children in random order.
 
 ![image](documentation/assets/nodes/btrandomselector.png)
 
@@ -79,12 +80,16 @@ The random selector node is a *composite node* behaves like the `BTSelector` nod
 
 ###  ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btsequence.png) BTSequence
 
-The sequence node is a *composite node* that executes its children from the first one to the last one, until all children succeed or one of its children fails. Il all children succedd, the sequence succeeds too ; if one child fails, the sequence fails too.
+The sequence node is a *composite node* that executes its children from the first one to the last one, until all children succeed or one of its children fails. If all children succeed, the sequence succeeds too ; if one child fails, the sequence fails too.
 
 ![image](documentation/assets/nodes/btsequence.png)
 
 🔑 Properties list:
 - `save_progression` : indicates whether the sequence should resume to the last running child on next tree execution (*on*), or restart from its first child (*off*). Its usefull to describe a non-interruptible action, or to optimize process time. Default is *off*.
+
+###  ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btparallel.png) BTParallel
+
+The parallel node is a *composite node* that executes all its children at each `tick`. If at least one child is is running, the parallel reports it's running too. If no child is running, then if at least one child succeeded, the parallel reports success, else it reports failure.
 
 ### ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btsuccess.png) BTSuccess
 
@@ -120,7 +125,7 @@ The repeat until node is a *decorator* node that loop its child execution until 
 
 ### ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btrandom.png) BTRandom
 
-The random node is a *decorator* node randomly execute its child. If the child is executed, the node result is the same as its child result. Otherwise, result is *failure.
+The random node is a *decorator* node randomly execute its child. If the child is executed, the node result is the same as its child result. Otherwise, result is *failure*.
 
 ![image](documentation/assets/nodes/btrandom.png)
 
@@ -129,7 +134,7 @@ The random node is a *decorator* node randomly execute its child. If the child i
 
 ### ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btcondition.png) BTCondition
 
-The condition node is a *leaf* node. Its purpose is to return *success* when  a condition is meet, *failure* otherwise. This node should never return *running.
+The condition node is a *leaf* node. Its purpose is to return *success* when  a condition is meet, *failure* otherwise. This node should never return *running*.
 
 **Users must subclass this node to implements their own condititions**.
 
@@ -150,25 +155,25 @@ Number and types of arguments must match function prototype, or an error will oc
 
 ### ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btconditionblackboardkeyexists.png) BTConditionBlackboardKeyExists
 
-The blackboard key exists condition node is a *leaf* node. It returns *success* if a certain key is present in the tree blackboard during its execution, *failure* otherwise.
+The blackboard key exists condition node is a *leaf* node. It returns *success* if a certain key is present in the tree blackboard during its execution, *failure* otherwise. This node operates in the blackboard *default namespace*.
 
 ![image](documentation/assets/nodes/btconditionblackboardkeyexists.png)
 
 🔑 Properties list:
-- `blackboard_key`: name of the key that must exists in the blackboard.
+- `blackboard_key`: name of the key that must exists in the blackboard, in *default namespace*.
 
 ⚠️ Due to GDScript 2.0 restrictions, only string type keys can be set, since its not possible to export Variant variables.
 
 ### ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btconditionblackboardvaluescomparison.png) BTConditionBlackboardValuesComparison
 
-The blackboard values comparison condition node is a *leaf* node. It returns *success* both values represented by specified keys returns true when compared using the given operator.
+The blackboard values comparison condition node is a *leaf* node. It returns *success* both values represented by specified keys returns true when compared using the given operator. This node operates in the blackboard *default namespace*.
 
 ![image](documentation/assets/nodes/btconditionblackboardvaluescomparison.png)
 
 🔑 Properties list:
-- `first_operand_blackboard_key`: name of the key that old the first value to compare.
-- `operator` : operator used to compare values
-- `second_operand_blackboard_key`: name of the key that old the second value to compare.
+- `first_operand_blackboard_key`: name of the key that old the first value to compare, in *default namespace*,
+- `operator` : operator used to compare values,
+- `second_operand_blackboard_key`: name of the key that old the second value to compare, in *default namespace*.
 
 ⚠️ Due to GDScript 2.0 restrictions, only string type keys can be set, since its not possible to export Variant variables.
 
@@ -205,32 +210,32 @@ The wait action node is a *leaf* node. Its execution returns *running* during th
 
 🔑 Properties list:
 - `wait_time_ms`: number of milliseconds to wait before returning *success*. Default is *1000*,
-- `random_deviation_ms` : indicates if a random deviation should be applied to the wait time. *0* means theire is no deviation et the wait time will be strictyl respected. Random deviation may change after each node rearm. Default is *0*, meaning no deviation at all.
+- `random_deviation_ms` : indicates if a random deviation should be applied to the wait time. *0* means there is no deviation et the wait time will be strictyl respected. Random deviation may change after each node rearm. Default is *0*, meaning no deviation at all.
 
 ### ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btactionblackboardset.png) BTActionBlackboardSet
 
-The blackboard set action node is a *leaf* node. It allows to set a value in the blackboard. Its execution always returns *success*. 
+The blackboard set action node is a *leaf* node. It allows to set a value in the blackboard. Its execution always returns *success*. This node operates in the blackboard *default namespace*.
 
 ![image](documentation/assets/nodes/btactionblackboardset.png)
 
 🔑 Properties list:
-- `blackboard_key`: name of the key that must be set,
+- `blackboard_key`: name of the key that must be set, in *default namespace*,
 - `expression` : an expression representing the value to associated to the given key. The expression will be evaluated by Godot Engine during child execution. It should be simple. See [Godot Expression](https://docs.godotengine.org/en/latest/classes/class_expression.html) for details. In expression, user has access to two predefined variables:
   - `actor`: the node the tree is describing action for,
   - `blackboard`: the tree blackboard,
   - `delta`: the *_process* or *_physics_process* delta value, as a `float`.
-- `can_overwrite_value` : a boolean indicating if the value must be overwritten if it already exists.
+- `can_overwrite_value` : a boolean indicating if the value must be overwritten if it already exists or not.
 
 ⚠️ Due to GDScript 2.0 restrictions, only string type keys can be set, since its not possible to export Variant variables.
 
 ### ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btactionblackboarddelete.png) BTActionBlackboardDelete
 
-The blackboard delete action node is a *leaf* node. It allows to erase a key from the tree blackboard.
+The blackboard delete action node is a *leaf* node. It allows to erase a key from the tree blackboard. This node operates in the blackboard *default namespace*.
 
 ![image](documentation/assets/nodes/btactionblackboarddelete.png)
 
 🔑 Properties list:
-- `blackboard_key`: name of the key that must be erased from blackboard.
+- `blackboard_key`: name of the key that must be erased from blackboard, in *default namespace*.
 
 ⚠️ Due to GDScript 2.0 restrictions, only string type keys can be set, since its not possible to export Variant variables.
 
@@ -245,9 +250,9 @@ Empty-shell nodes **BTAction** and **BTCondition** are your entry-points. You ju
 ### Exemple of condition
 
 ```gdscript
-extends BTCondition
-class_name ConditionPlayerIsInRange
 @icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btcondition.png")
+class_name ConditionPlayerIsInRange
+extends BTCondition
 
 @export var player_detection_distance:int = 50
 
@@ -266,9 +271,9 @@ func tick(actor:Node2D, _blackboard:BTBlackboard) -> int:
 ### Exemple of action
 
 ```gdscript
-extends BTAction
-class_name ActionWander
 @icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btaction.png")
+class_name ActionWander
+extends BTAction
 
 func tick(actor:Node2D, blackboard:BTBlackboard) -> int:
     var current_position:Vector2 = actor.global_position

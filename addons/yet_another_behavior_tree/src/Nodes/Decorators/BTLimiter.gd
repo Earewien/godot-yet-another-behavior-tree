@@ -1,7 +1,13 @@
 @tool
 @icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btlimiter.png")
-extends BTDecorator
 class_name BTLimiter
+extends BTDecorator
+
+
+## The limiter node is a [i]decorator[/i] node that limits the total number of execution of its child node.
+## When the limit is not reachs, the limiter nodes reports its child execution status. Once the limit is reachs,
+## it never executs its child and always report a [i]failed[/i] execution.
+
 
 #------------------------------------------
 # Signaux
@@ -11,8 +17,11 @@ class_name BTLimiter
 # Exports
 #------------------------------------------
 
+## Number of allowed child execution.
 @export_range(0, 9999999, 1) var limit:int = 1
 
+## Whether or not the [code]limit[/code] value is included into the number of times the child can run.
+## It clarifies the usage of the limit.
 @export var include_limit:bool = true
 
 #------------------------------------------

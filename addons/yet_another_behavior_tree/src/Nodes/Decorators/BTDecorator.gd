@@ -1,7 +1,13 @@
 @tool
 @icon("res://addons/yet_another_behavior_tree/src/Assets/Icons/btdecorator.png")
-extends BTNode
 class_name BTDecorator
+extends BTNode
+
+
+## Base object for all behavior tree decorators.
+## Decorator nodes allow to customize result of its only child node.
+## [b][u]This node should never be used directly.[/u][/b]
+
 
 #------------------------------------------
 # Signaux
