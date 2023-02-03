@@ -42,7 +42,7 @@ var _invocation_count:int = 0
 # Fonctions publiques
 #------------------------------------------
 
-func tick(actor:Node2D, blackboard:BTBlackboard) -> int:
+func tick(actor:Node, blackboard:BTBlackboard) -> int:
     var limit_reached:bool = _invocation_count >= limit
     if not include_limit:
         limit_reached = _invocation_count >= limit - 1

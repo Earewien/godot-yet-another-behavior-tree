@@ -36,7 +36,7 @@ var _expression:Expression
 func is_valid() -> bool:
     return _expression != null
 
-func evaluate(actor:Node2D, blackboard:BTBlackboard) -> Variant:
+func evaluate(actor:Node, blackboard:BTBlackboard) -> Variant:
     var arguments:Array[Variant] = [actor, blackboard, blackboard.get_delta()]
     return _execute_expression(arguments)
 

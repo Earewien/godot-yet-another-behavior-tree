@@ -34,7 +34,7 @@ extends BTDecorator
 # Fonctions publiques
 #------------------------------------------
 
-func tick(actor:Node2D, blackboard:BTBlackboard) -> int:
+func tick(actor:Node, blackboard:BTBlackboard) -> int:
     var child_result:int = _children[0]._execute(actor, blackboard)
     if child_result == BTTickResult.SUCCESS:
         return BTTickResult.FAILURE

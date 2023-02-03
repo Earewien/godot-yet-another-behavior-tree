@@ -256,7 +256,7 @@ extends BTCondition
 
 @export var player_detection_distance:int = 50
 
-func tick(actor:Node2D, _blackboard:BTBlackboard) -> int:
+func tick(actor:Node, _blackboard:BTBlackboard) -> int:
     var player_position:Vector2 = get_tree().get_nodes_in_group("player")[0].global_position
     var actor_position:Vector2 = actor.global_position
     var player_distance:float = actor_position.distance_to(player_position)
@@ -275,7 +275,7 @@ func tick(actor:Node2D, _blackboard:BTBlackboard) -> int:
 class_name ActionWander
 extends BTAction
 
-func tick(actor:Node2D, blackboard:BTBlackboard) -> int:
+func tick(actor:Node, blackboard:BTBlackboard) -> int:
     var current_position:Vector2 = actor.global_position
     var target_position:Vector2 = blackboard.get_data("wander_position")
     if current_position.distance_to(target_position) < 5:

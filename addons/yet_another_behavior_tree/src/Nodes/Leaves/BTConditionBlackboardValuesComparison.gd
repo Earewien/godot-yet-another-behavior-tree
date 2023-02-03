@@ -66,7 +66,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 # Fonctions publiques
 #------------------------------------------
 
-func tick(actor:Node2D, blackboard:BTBlackboard) -> int:
+func tick(actor:Node, blackboard:BTBlackboard) -> int:
     var result:int = BTTickResult.FAILURE
 
     var first_operand:Variant = blackboard.get_data(first_operand_blackboard_key)

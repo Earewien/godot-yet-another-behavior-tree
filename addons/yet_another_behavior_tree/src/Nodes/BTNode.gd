@@ -49,7 +49,7 @@ func _ready() -> void:
 # Fonctions publiques
 #------------------------------------------
 
-func tick(actor:Node2D, blackboard:BTBlackboard) -> int:
+func tick(actor:Node, blackboard:BTBlackboard) -> int:
     return BTTickResult.SUCCESS
 
 func is_leaf() -> bool:
@@ -86,7 +86,7 @@ func _update_cached_children(any) -> void:
         if child is BTNode:
             _children.append(child)
 
-func _execute(actor:Node2D, blackboard:BTBlackboard) -> int:
+func _execute(actor:Node, blackboard:BTBlackboard) -> int:
     if _is_in_editor:
         return BTTickResult.FAILURE
 
@@ -105,14 +105,14 @@ func _enter(blackboard:BTBlackboard) -> void:
     enter(blackboard)
     pass
 
-func _start(actor:Node2D, blackboard:BTBlackboard) -> void:
+func _start(actor:Node, blackboard:BTBlackboard) -> void:
     var blackboard_namespace:String = str(actor.get_instance_id())
     blackboard.get_data("running_nodes", [], blackboard_namespace).append(self)
 
     if not blackboard.get_data("previously_running_nodes", [], blackboard_namespace).has(self):
         start(blackboard)
 
-func _stop(actor:Node2D, blackboard:BTBlackboard) -> void:
+func _stop(actor:Node, blackboard:BTBlackboard) -> void:
     var blackboard_namespace:String = str(actor.get_instance_id())
     blackboard.get_data("running_nodes", [], blackboard_namespace).erase(self)
     exit(blackboard)

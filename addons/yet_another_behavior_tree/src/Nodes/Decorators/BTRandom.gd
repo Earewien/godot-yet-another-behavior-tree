@@ -36,7 +36,7 @@ extends BTDecorator
 # Fonctions publiques
 #------------------------------------------
 
-func tick(actor:Node2D, blackboard:BTBlackboard) -> int:
+func tick(actor:Node, blackboard:BTBlackboard) -> int:
     var random_float:float = randf()
     if random_float > probability:
         return BTTickResult.FAILURE

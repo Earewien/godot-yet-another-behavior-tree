@@ -72,7 +72,7 @@ signal on_idle()
 
 var _blackboard:BTBlackboard
 var _previous_running_nodes:Array[BTNode] = []
-var _actor:Node2D
+var _actor:Node
 
 var _execution_start_time_ms:float
 var _execution_stop_time_ms:float

@@ -45,7 +45,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 # Fonctions publiques
 #------------------------------------------
 
-func tick(actor:Node2D, blackboard:BTBlackboard) -> int:
+func tick(actor:Node, blackboard:BTBlackboard) -> int:
     blackboard.delete_data(blackboard_key)
     return BTTickResult.SUCCESS
 

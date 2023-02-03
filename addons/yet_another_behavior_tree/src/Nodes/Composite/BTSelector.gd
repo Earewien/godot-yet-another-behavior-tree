@@ -36,7 +36,7 @@ var _running_child_index:int = -1
 # Fonctions Godot redéfinies
 #------------------------------------------
 
-func tick(actor:Node2D, blackboard:BTBlackboard) -> int:
+func tick(actor:Node, blackboard:BTBlackboard) -> int:
     for child_index in _children.size():
         if not save_progression or child_index >= _running_child_index:
             var child:BTNode = _children[child_index]
