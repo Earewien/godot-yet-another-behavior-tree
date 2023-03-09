@@ -58,6 +58,10 @@ signal on_idle()
 ## empty blackboard will be used during tree execution.
 @export var blackboard:BTBlackboard = null :
     set(value):
+        if is_instance_valid(blackboard):
+            if blackboard.get_parent() == self:
+                remove_child(blackboard)
+            blackboard.queue_free()
         blackboard = value
         _update_blackboard()
         update_configuration_warnings()
@@ -138,9 +142,12 @@ func _check_actor_validity() -> bool:
 
 func _update_blackboard() -> void:
     if blackboard != null and is_instance_valid(blackboard):
-        _blackboard= blackboard
+        _blackboard = blackboard
     else:
         _blackboard = BTBlackboard.new()
+        blackboard = _blackboard
+    if not is_instance_valid(_blackboard.get_parent()):
+        add_child(_blackboard)
 
 func _update_actor_from_path() -> void:
     _actor = get_node_or_null(actor_path)
