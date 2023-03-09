@@ -157,7 +157,8 @@ func _do_execute(delta:float):
     _blackboard.set_data("previously_running_nodes", Array(_previous_running_nodes), blackboard_namespace)
     _blackboard.set_data("running_nodes", [], blackboard_namespace)
 
-    _children[0]._execute(_actor, _blackboard)
+    if _children[0].process_mode != PROCESS_MODE_DISABLED:
+        _children[0]._execute(_actor, _blackboard)
 
     var raw_running_nodes:Array = _blackboard.get_data("running_nodes", [], blackboard_namespace)
     var running_nodes:Array[BTNode] = []

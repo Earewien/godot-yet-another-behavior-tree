@@ -48,6 +48,10 @@ func talk() -> int:
     get_tree().create_timer(1).timeout.connect(func():_text_label.visible = false)
     return BTTickResult.SUCCESS
 
+func talk_in_console() -> int:
+    print("%s : I'm talking" % player_name)
+    return BTTickResult.SUCCESS
+
 func choose_next_player_talking(blackboard:BTBlackboard) -> int:
     blackboard.set_data("next_talking", _pick_next_player(blackboard.get_data("players")))
     return BTTickResult.SUCCESS

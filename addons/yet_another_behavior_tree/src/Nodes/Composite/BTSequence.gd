@@ -40,11 +40,12 @@ func tick(actor:Node, blackboard:BTBlackboard) -> int:
     for child_index in _children.size():
         if not save_progression or child_index >= _running_child_index:
             var child:BTNode = _children[child_index]
-            var result:int = child._execute(actor, blackboard)
-            if result != BTTickResult.SUCCESS:
-                if save_progression and result == BTTickResult.RUNNING:
-                    _running_child_index = child_index
-                return result
+            if child.process_mode != PROCESS_MODE_DISABLED:
+                var result:int = child._execute(actor, blackboard)
+                if result != BTTickResult.SUCCESS:
+                    if save_progression and result == BTTickResult.RUNNING:
+                        _running_child_index = child_index
+                    return result
 
     return BTTickResult.SUCCESS
 

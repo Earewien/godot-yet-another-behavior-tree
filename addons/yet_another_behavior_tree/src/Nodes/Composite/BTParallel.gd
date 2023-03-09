@@ -34,11 +34,12 @@ func tick(actor:Node, blackboard:BTBlackboard) -> int:
     var at_least_one_child_success:bool = false
 
     for child in _children:
-        var result:int = child._execute(actor, blackboard)
-        if result == BTTickResult.SUCCESS:
-            at_least_one_child_success = true
-        if result == BTTickResult.RUNNING:
-            at_least_one_child_running = true
+        if child.process_mode != PROCESS_MODE_DISABLED:
+            var result:int = child._execute(actor, blackboard)
+            if result == BTTickResult.SUCCESS:
+                at_least_one_child_success = true
+            if result == BTTickResult.RUNNING:
+                at_least_one_child_running = true
 
     # At least one running : this is still running !
     if at_least_one_child_running:

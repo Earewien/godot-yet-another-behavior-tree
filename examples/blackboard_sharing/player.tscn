@@ -100,6 +100,12 @@ script = ExtResource("6_i6lan")
 method_owner_path = NodePath("../../../../..")
 method_name = "talk"
 
+[node name="Talk Again In Console (Disabled)" type="Node" parent="BTRoot/Do/One Between/I must talk"]
+process_mode = 4
+script = ExtResource("6_i6lan")
+method_owner_path = NodePath("../../../../..")
+method_name = "talk_in_console"
+
 [node name="Wait a little bit" type="Node" parent="BTRoot/Do/One Between/I must talk"]
 script = ExtResource("10_1e6f0")
 random_deviation_ms = 300

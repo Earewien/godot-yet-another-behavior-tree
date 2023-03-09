@@ -25,6 +25,8 @@ Depending on your tree structure, node result will produce various behaviors. Se
 
 ➡️ In some cases, you will need to share information between your AI nodes. To avoid to create side scripts and/or stateful entities, this behavior tree also provides the notion of Blackboard. In a blackboard, you can store key-value datas. They can be retrieve and updated from any node in your tree. Blackboard is not erased between tree execution, meaning you can store persistent datas in it.
 
+➡️ Once in a while, it is useful to disable a tree node, to prevent it's behavior. A simple way to do that is to remove the tree node from the tree itself ; but if you want to reactivate the tree bahavior, you will need to re-add the tree njode in the tree. That's not user-friendly. To avoid that situation, it is possible to disable a node by setting its `process_modde` property (*built-in Godot*) to `PROCESS_MODE_DISABLED`. Note that disablAsed nodes are checked by *composite nodes* only, meaning it's the composite node that will not *tick* its child node if its `process_mode` is disabled. As a consequence, disabling a *decorator* child node has no effect, instead the decorator itself must be disabled.
+
 *(See below for full node documentation)*
 
 ➡️ Having nice features is cool, but beeing able to use them in an easy way is cooler 😎. **Yet Another Behavior Tree** provides a nice Godot Editor integration throught
