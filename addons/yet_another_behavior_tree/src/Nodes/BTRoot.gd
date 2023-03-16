@@ -128,9 +128,15 @@ func is_valid() -> bool:
     return _check_direct_children_validity() and _check_actor_validity()
 
 func _check_direct_children_validity() -> bool:
-    var is_valid:bool = get_child_count() == 1
+    var child_count:int = get_child_count()
+    # Why 2 ? A BTComposite and, possibly an (auto-generated) blackboard
+    var is_valid:bool = child_count > 0 and child_count <= 2
     if is_valid:
-        is_valid = get_child(0) is BTComposite
+        if child_count == 1:
+            is_valid = get_child(0) is BTComposite
+        else: # 2
+            is_valid = (get_child(0) is BTComposite or get_child(1) is BTComposite) \
+                and (get_child(0) is BTBlackboard or get_child(1) is BTBlackboard)
     return is_valid
 
 func _check_actor_validity() -> bool:
