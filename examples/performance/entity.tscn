@@ -1,0 +1,43 @@
+[gd_scene load_steps=7 format=3 uid="uid://ddmm7e4nnvyue"]
+
+[ext_resource type="Script" path="res://addons/yet_another_behavior_tree/src/Nodes/BTRoot.gd" id="1_50pyk"]
+[ext_resource type="Script" path="res://examples/performance/entity.gd" id="1_ie8qq"]
+[ext_resource type="Script" path="res://addons/yet_another_behavior_tree/src/Nodes/Composite/BTRandomSelector.gd" id="3_0h5k8"]
+[ext_resource type="Script" path="res://addons/yet_another_behavior_tree/src/Nodes/Composite/BTSequence.gd" id="3_jko3j"]
+[ext_resource type="Script" path="res://addons/yet_another_behavior_tree/src/Nodes/Leaves/BTActionCallable.gd" id="5_ibdbo"]
+[ext_resource type="Script" path="res://addons/yet_another_behavior_tree/src/Nodes/Leaves/BTActionWait.gd" id="6_eq7yq"]
+
+[node name="Entity" type="Node2D"]
+script = ExtResource("1_ie8qq")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(0.0235294, 0.368627, 0.419608, 1)
+polygon = PackedVector2Array(-4, -5, -1, -10, 2, -5, 8, -2, 2, 1, -4, 1, -10, -2)
+
+[node name="AI" type="Node" parent="."]
+script = ExtResource("1_50pyk")
+actor_path = NodePath("..")
+
+[node name="Random Behavior" type="Node" parent="AI"]
+script = ExtResource("3_0h5k8")
+
+[node name="Idle" type="Node" parent="AI/Random Behavior"]
+script = ExtResource("3_jko3j")
+
+[node name="Wait a little bit" type="Node" parent="AI/Random Behavior/Idle"]
+script = ExtResource("6_eq7yq")
+wait_time_ms = 200
+random_deviation_ms = 50
+
+[node name="Stay Idle" type="Node" parent="AI/Random Behavior/Idle"]
+script = ExtResource("5_ibdbo")
+method_owner_path = NodePath("../../../..")
+method_name = "stay_idle"
+
+[node name="Move" type="Node" parent="AI/Random Behavior"]
+script = ExtResource("3_jko3j")
+
+[node name="Move" type="Node" parent="AI/Random Behavior/Move"]
+script = ExtResource("5_ibdbo")
+method_owner_path = NodePath("../../../..")
+method_name = "move"
