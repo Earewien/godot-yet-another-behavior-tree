@@ -60,7 +60,8 @@ Its the entry point of your behavior tree. It can only have a unique child of ty
 - `enabled` : indicates if tree should run or not. Default is *on*,
 - `root_process_mode` : indicates whether tree should execute during *process* or *physics process*. Default is *physics process*,
 - `actor_path` : path to the node that the tree is drescribing actions for. This is the node that will be passed to all tree nodes, allowing you to manipulate the actor at every tree step. Default is *empty*.
-- `blackboard` : path to the blackboard node. This allows to share a same blackboard between several trees, for example to code a group of enemies acting together, or to specify some default entries using the editor. If empty, a default empty blackboard will be used during tree execution. Default is *empty*.
+- `blackboard` : path to the blackboard node. This allows to share a same blackboard between several trees, for example to code a group of enemies acting together, or to specify some default entries using the editor. If empty, a default empty blackboard will be used during tree execution. Default is *empty*,
+- `enable_monitor` (*debug option*) : indicates if, in debug mode, a custom monitor should be created for this tree. Custom monitor allows to track performances in Debugger Monitors view.
 
 ###  ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btselector.png) BTSelector
 

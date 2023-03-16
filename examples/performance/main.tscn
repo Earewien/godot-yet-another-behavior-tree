@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://dwmylx22uacib"]
+
+[ext_resource type="Script" path="res://examples/performance/main.gd" id="1_xjb0f"]
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_xjb0f")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 1153.0
+offset_bottom = 648.0
+color = Color(0.541176, 0.878431, 0.713726, 1)
