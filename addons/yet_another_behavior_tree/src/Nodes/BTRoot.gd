@@ -81,11 +81,12 @@ signal on_idle()
 #------------------------------------------
 
 var _blackboard:BTBlackboard
-var _previous_running_nodes:Array[BTNode] = []
 var _actor:Node
 
 var _execution_start_time_ms:float
 var _execution_stop_time_ms:float
+
+var _internal_state:Dictionary = {}
 
 @onready var _performance_monitor_identifier:String = "BTRoot/%s-%s" % [get_name(), get_instance_id()]
 
@@ -168,35 +169,41 @@ func _update_actor_from_path() -> void:
         _actor = get_tree().current_scene.get_node_or_null(actor_path)
 
 func _do_execute(delta:float):
-    var blackboard_namespace:String = str(_actor.get_instance_id())
     if enable_monitor:
         _register_execution_start()
+    if not _internal_state.has(_actor.get_instance_id()):
+        _internal_state[_actor.get_instance_id()] = {}
+    var local_state:Dictionary = _internal_state.get(_actor.get_instance_id())
+
     # delta est une donnée volatile, elle n'est donc pas dans un namespace puisque chaque arbre tourne
     # séquentiellement, donc il n'y a pas de collision de données en cas de partage du blackboard
-    _blackboard.set_data("delta", delta)
-    _blackboard.set_data("previously_running_nodes", Array(_previous_running_nodes), blackboard_namespace)
-    _blackboard.set_data("running_nodes", [], blackboard_namespace)
+    _blackboard._unsafe_set_delta(delta)
+    var previously_running_nodes:Array = local_state["previously_running_nodes"] if local_state.has("previously_running_nodes") else []
+    local_state["previously_running_nodes"] = previously_running_nodes
+    var running_nodes:Array[BTNode] = []
+    local_state["running_nodes"] = running_nodes
 
     if _children[0].process_mode != PROCESS_MODE_DISABLED:
         _children[0]._execute(_actor, _blackboard)
 
-    var raw_running_nodes:Array = _blackboard.get_data("running_nodes", [], blackboard_namespace)
-    var running_nodes:Array[BTNode] = []
-    running_nodes.append_array(raw_running_nodes)
-    if _previous_running_nodes != running_nodes:
-        for n in _previous_running_nodes:
+    if previously_running_nodes != running_nodes:
+        for n in previously_running_nodes:
             if not running_nodes.has(n):
-                n._stop(_actor, _blackboard)
+                n._stop(_actor, _blackboard, local_state)
 
         if not running_nodes.is_empty():
-            var running_node_names:Array[String] = []
-            for running_node in running_nodes:
-                if running_node.is_leaf():
-                    running_node_names.append(str(running_node.name))
-            on_running.emit(running_node_names)
+            if not on_running.get_connections().is_empty():
+                var running_node_names:Array[String] = []
+                for running_node in running_nodes:
+                    if running_node.is_leaf():
+                        running_node_names.append(str(running_node.name))
+                on_running.emit(running_node_names)
         else:
-            on_idle.emit()
-        _previous_running_nodes = running_nodes
+            if not on_idle.get_connections().is_empty():
+                on_idle.emit()
+
+        previously_running_nodes.clear()
+        previously_running_nodes.append_array(running_nodes)
 
     if enable_monitor:
         _register_execution_stop()

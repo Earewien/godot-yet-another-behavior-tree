@@ -59,7 +59,7 @@ func _ready() -> void:
 
 func get_delta() -> float:
     # Delta is not in any namespace, since its a volatile data, that is valid just inside one tree tick
-    return get_data("delta")
+    return _default_namespace_data["delta"]
 
 func has_data(key:Variant, board_namespace:String = DEFAULT_NAMESPACE) -> bool:
     var namespace_dico:Dictionary = _get_namespace_board(board_namespace)
@@ -89,3 +89,6 @@ func _get_namespace_board(board_namespace:String) -> Dictionary:
     if not _execution_data.has(board_namespace):
         _execution_data[board_namespace] = {}
     return _execution_data[board_namespace]
+
+func _unsafe_set_delta(value:float) -> void:
+    _default_namespace_data["delta"] = value

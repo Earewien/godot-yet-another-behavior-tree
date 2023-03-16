@@ -26,6 +26,7 @@ extends Node
 
 @onready var _is_in_editor:bool = Engine.is_editor_hint()
 var _children:Array[BTNode] = []
+var _tree_root:BTRoot
 
 #------------------------------------------
 # Fonctions Godot redéfinies
@@ -38,6 +39,8 @@ func _init() -> void:
         _connect_signal_if_needed(child_exiting_tree, _update_configuration_warnings_1)
         _connect_signal_if_needed(tree_entered, _update_configuration_warnings_0)
         _connect_signal_if_needed(tree_exited, _update_configuration_warnings_0)
+    _connect_signal_if_needed(tree_entered, _update_cached_tree_root)
+    _connect_signal_if_needed(tree_exited, _update_cached_tree_root)
     _connect_signal_if_needed(child_entered_tree, _update_cached_children)
     _connect_signal_if_needed(child_exiting_tree, _update_cached_children)
 
@@ -80,6 +83,15 @@ func _update_configuration_warnings_1(any) -> void:
 func is_valid() -> bool:
     return false
 
+func _update_cached_tree_root() -> void:
+    _tree_root = null
+    var parent:Node = get_parent()
+    while is_instance_valid(parent):
+        if parent is BTRoot:
+            _tree_root = parent
+            break
+        parent = parent.get_parent()
+
 func _update_cached_children(any) -> void:
     _children.clear()
     for child in get_children():
@@ -90,36 +102,28 @@ func _execute(actor:Node, blackboard:BTBlackboard) -> int:
     if _is_in_editor:
         return BTTickResult.FAILURE
 
-    _enter(blackboard);
+    var local_state:Dictionary = _tree_root._internal_state.get(actor.get_instance_id())
 
-    _start(actor, blackboard)
+    enter(blackboard)
+
+    _start(actor, blackboard, local_state)
 
     var result:int = tick(actor, blackboard)
     if result != BTTickResult.RUNNING:
-        _stop(actor, blackboard)
+        _stop(actor, blackboard, local_state)
 
-    _exit(blackboard)
     return result
 
-func _enter(blackboard:BTBlackboard) -> void:
-    enter(blackboard)
-    pass
+func _start(actor:Node, blackboard:BTBlackboard, local_state:Dictionary) -> void:
+    local_state["running_nodes"].append(self)
 
-func _start(actor:Node, blackboard:BTBlackboard) -> void:
-    var blackboard_namespace:String = str(actor.get_instance_id())
-    blackboard.get_data("running_nodes", [], blackboard_namespace).append(self)
-
-    if not blackboard.get_data("previously_running_nodes", [], blackboard_namespace).has(self):
+    if not local_state["previously_running_nodes"].has(self):
         start(blackboard)
 
-func _stop(actor:Node, blackboard:BTBlackboard) -> void:
-    var blackboard_namespace:String = str(actor.get_instance_id())
-    blackboard.get_data("running_nodes", [], blackboard_namespace).erase(self)
+func _stop(actor:Node, blackboard:BTBlackboard, local_state:Dictionary) -> void:
+    local_state["running_nodes"].erase(self)
     exit(blackboard)
     stop(blackboard)
-
-func _exit(blackboard:BTBlackboard) -> void:
-    pass
 
 func _connect_signal_if_needed(sig:Signal, callable:Callable) -> void:
     if not sig.is_connected(callable):
