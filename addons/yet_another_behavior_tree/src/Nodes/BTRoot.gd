@@ -66,6 +66,12 @@ signal on_idle()
         _update_blackboard()
         update_configuration_warnings()
 
+@export_category("Debug")
+
+## Indicates if, in debug mode, a custom monitor should be created for this tree.
+## Custom monitor allows to track performances in Debugger Monitors view.
+@export var enable_monitor:bool = false
+
 #------------------------------------------
 # Variables publiques
 #------------------------------------------
@@ -95,7 +101,7 @@ func _ready() -> void:
     # Init du blackboard:  soit celui de l'utilisateur, soit un tout neuf
     _update_blackboard()
 
-    if not Engine.is_editor_hint():
+    if not Engine.is_editor_hint() and enable_monitor:
         _add_custom_performance_monitor()
         tree_entered.connect(_add_custom_performance_monitor)
         tree_exited.connect(_remove_custom_performance_monitor)
@@ -162,8 +168,9 @@ func _update_actor_from_path() -> void:
         _actor = get_tree().current_scene.get_node_or_null(actor_path)
 
 func _do_execute(delta:float):
-    _register_execution_start()
     var blackboard_namespace:String = str(_actor.get_instance_id())
+    if enable_monitor:
+        _register_execution_start()
     # delta est une donnée volatile, elle n'est donc pas dans un namespace puisque chaque arbre tourne
     # séquentiellement, donc il n'y a pas de collision de données en cas de partage du blackboard
     _blackboard.set_data("delta", delta)
@@ -190,7 +197,9 @@ func _do_execute(delta:float):
         else:
             on_idle.emit()
         _previous_running_nodes = running_nodes
-    _register_execution_stop()
+
+    if enable_monitor:
+        _register_execution_stop()
 
 func _add_custom_performance_monitor() -> void:
     if not Performance.has_custom_monitor(_performance_monitor_identifier):
