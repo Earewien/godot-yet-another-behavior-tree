@@ -42,6 +42,7 @@ const DEFAULT_NAMESPACE:String = "_default_namespace"
 #    }
 # }
 var _execution_data:Dictionary = {}
+var _default_namespace_data:Dictionary
 
 #------------------------------------------
 # Fonctions Godot redéfinies
@@ -49,7 +50,8 @@ var _execution_data:Dictionary = {}
 
 func _ready() -> void:
     # On copie le dico défini par l'utilisateur dans le dico privé
-    _get_namespace_board(DEFAULT_NAMESPACE).merge(data)
+    _default_namespace_data = _get_namespace_board(DEFAULT_NAMESPACE)
+    _default_namespace_data.merge(data)
 
 #------------------------------------------
 # Fonctions publiques
