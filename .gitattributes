@@ -4,6 +4,3 @@
 # Only include the addons folder when downloading from the Asset Library.
 documentation                           export-ignore
 examples                                export-ignore
-.gitattributes                          export-ignore
-.gitignore                              export-ignore
-project.godot                           export-ignore
