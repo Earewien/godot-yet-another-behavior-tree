@@ -1,4 +1,4 @@
 extends _BASE_
 
-func tick(actor:Node2D, blackboard:BTBlackboard) -> int:
+func tick(actor:Node, blackboard:BTBlackboard) -> int:
     return BTTickResult.SUCCESS
