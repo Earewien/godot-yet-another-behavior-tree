@@ -33,7 +33,6 @@ var _tree_root:BTRoot
 #------------------------------------------
 
 func _init() -> void:
-    super._init()
     if _is_in_editor:
         _connect_signal_if_needed(child_entered_tree, _update_configuration_warnings_1)
         _connect_signal_if_needed(child_exiting_tree, _update_configuration_warnings_1)
