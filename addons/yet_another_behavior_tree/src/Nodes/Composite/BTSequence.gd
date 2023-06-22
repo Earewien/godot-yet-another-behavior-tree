@@ -53,6 +53,10 @@ func tick(actor:Node, blackboard:BTBlackboard) -> int:
 # Fonctions publiques
 #------------------------------------------
 
+func reset() -> void:
+    _running_child_index = -1
+    super.reset()
+
 #------------------------------------------
 # Fonctions privées
 #------------------------------------------

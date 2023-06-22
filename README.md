@@ -45,6 +45,8 @@ Data in blackboard can be isolated in so-called *namespaces*. A data key can exi
 Some well-known properties are already fed by the root tree during execution :
 - `delta` : the float value of delta from *process* or *physics process* (depending on root tree process mode).
 
+A blackboard can also be reset using `reset` method. This method will erase all blackboard content, except well-known properties. The initial data is also restored after resetting the blackboard.
+
 ![image](documentation/assets/nodes/btblackboard.png)
 
 🔑 Properties list:
@@ -62,6 +64,8 @@ Its the entry point of your behavior tree. It can only have a unique child of ty
 - `actor_path` : path to the node that the tree is drescribing actions for. This is the node that will be passed to all tree nodes, allowing you to manipulate the actor at every tree step. Default is *empty*.
 - `blackboard` : path to the blackboard node. This allows to share a same blackboard between several trees, for example to code a group of enemies acting together, or to specify some default entries using the editor. If empty, a default empty blackboard will be used during tree execution. Default is *empty*,
 - `enable_monitor` (*debug option*) : indicates if, in debug mode, a custom monitor should be created for this tree. Custom monitor allows to track performances in Debugger Monitors view.
+
+`BTRoot` can be reset, allowinf to resuse the node for another usage. Resetting the tree ensures that all its nodes will be reset too (recursively). Resetting the tree does *not* reset the associated blackboard, since blackboards can be shared among multiple trees. To reset the blackboard, use its reset function.
 
 ###  ![icon](addons/yet_another_behavior_tree/src/Assets/Icons/btselector.png) BTSelector
 

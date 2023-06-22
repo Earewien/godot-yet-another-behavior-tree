@@ -69,6 +69,10 @@ func stop(blackboard:BTBlackboard) -> void:
 func exit(blackboard:BTBlackboard) -> void:
     pass
 
+## Reset node state, as it is was just instantiated
+func reset() -> void:
+    pass
+
 #------------------------------------------
 # Fonctions privées
 #------------------------------------------

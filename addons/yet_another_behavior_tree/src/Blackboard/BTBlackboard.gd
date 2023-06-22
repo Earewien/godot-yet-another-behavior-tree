@@ -50,8 +50,7 @@ var _default_namespace_data:Dictionary
 
 func _ready() -> void:
     # On copie le dico défini par l'utilisateur dans le dico privé
-    _default_namespace_data = _get_namespace_board(DEFAULT_NAMESPACE)
-    _default_namespace_data.merge(data)
+    _init_default_namespace()
 
 #------------------------------------------
 # Fonctions publiques
@@ -81,9 +80,23 @@ func delete_data(key:Variant, board_namespace:String = DEFAULT_NAMESPACE) -> Var
     namespace_dico.erase(key)
     return old_value.get_ref() if old_value is WeakRef else old_value
 
+## Reset the whole blackboard, erasing all data from it.
+## Data set in node configuration through [data] field is restored
+func reset() -> void:
+    # To prevent tree from just stop working, we preserve delta value into the blackboard
+    # It's an internal state, shoumd never be erased by user
+    var delta:float = get_delta()
+    _execution_data.clear()
+    _init_default_namespace()
+    _unsafe_set_delta(delta)
+
 #------------------------------------------
 # Fonctions privées
 #------------------------------------------
+
+func _init_default_namespace() -> void:
+    _default_namespace_data = _get_namespace_board(DEFAULT_NAMESPACE)
+    _default_namespace_data.merge(data)
 
 func _get_namespace_board(board_namespace:String) -> Dictionary:
     if not _execution_data.has(board_namespace):

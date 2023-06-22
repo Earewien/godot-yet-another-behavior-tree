@@ -41,6 +41,10 @@ func _get_configuration_warnings() -> PackedStringArray:
 # Fonctions publiques
 #------------------------------------------
 
+func reset() -> void:
+    for child in _children:
+        child.reset()
+
 #------------------------------------------
 # Fonctions privées
 #------------------------------------------

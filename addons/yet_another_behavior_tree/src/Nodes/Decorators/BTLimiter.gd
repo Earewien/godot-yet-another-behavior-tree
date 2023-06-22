@@ -55,6 +55,10 @@ func tick(actor:Node, blackboard:BTBlackboard) -> int:
         _invocation_count += 1
     return result
 
+func reset() -> void:
+    _invocation_count = 0
+    super.reset()
+
 #------------------------------------------
 # Fonctions privées
 #------------------------------------------

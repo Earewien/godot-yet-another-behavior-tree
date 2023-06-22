@@ -55,6 +55,10 @@ func start(blackboard:BTBlackboard) -> void:
     if random_deviation_ms != 0:
         _time_to_reach_ms += randi_range(0, random_deviation_ms)
 
+func reset() -> void:
+    _current_time_ms = 0
+    _time_to_reach_ms = 0
+
 #------------------------------------------
 # Fonctions privées
 #------------------------------------------

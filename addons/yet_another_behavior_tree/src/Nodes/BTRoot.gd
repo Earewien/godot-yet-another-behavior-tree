@@ -127,6 +127,14 @@ func _get_configuration_warnings() -> PackedStringArray:
 # Fonctions publiques
 #------------------------------------------
 
+## Reset behavior tree state, and children states too
+## This method should never be called when tree is used. It is intended to recycle the
+## tree for other usage, so it should be called outside tree execution
+## Tree associated blackboard is NOT reset. To do it, call reset function on blackboard itself.
+func reset() -> void:
+    _internal_state.clear()
+    _children[0].reset()
+
 #------------------------------------------
 # Fonctions privées
 #------------------------------------------
